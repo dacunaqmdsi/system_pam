@@ -250,6 +250,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $assets_description = htmlspecialchars(trim($_POST['assets_description'] ?? ''));
         $assets_price = htmlspecialchars(trim($_POST['assets_price'] ?? ''));
 
+
+        // size,brand,unit,paper_type,thickness
+        $size = htmlspecialchars(trim($_POST['size'] ?? ''));
+        $brand = htmlspecialchars(trim($_POST['brand'] ?? ''));
+        $unit = htmlspecialchars(trim($_POST['unit'] ?? ''));
+        $paper_type = htmlspecialchars(trim($_POST['paper_type'] ?? ''));
+        $thickness = htmlspecialchars(trim($_POST['thickness'] ?? ''));
+
+
         $assets_variety_name = htmlspecialchars(trim($_POST['assets_variety_name'] ?? ''));
         $assets_variety_values = isset($_POST['assets_variety_value']) ? $_POST['assets_variety_value'] : [];
 
@@ -275,7 +284,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $assets_status,
             $assets_description,
             $assets_price,
-            $variety_json
+            $variety_json,
+            $size,
+            $brand,
+            $unit,
+            $paper_type,
+            $thickness
         );
 
         if ($result == "success") {

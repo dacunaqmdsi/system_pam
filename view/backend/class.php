@@ -111,8 +111,24 @@ class global_class extends db_connect
 
 
 
-    public function AddAssets($assets_imageName, $assets_code, $assets_name, $assets_Office, $assets_category, $assets_subcategory, $assets_condition, $assets_status, $assets_description, $assets_price, $variety_json)
-    {
+    public function AddAssets(
+        $assets_imageName,
+        $assets_code,
+        $assets_name,
+        $assets_Office,
+        $assets_category,
+        $assets_subcategory,
+        $assets_condition,
+        $assets_status,
+        $assets_description,
+        $assets_price,
+        $variety_json,
+        $size,
+        $brand,
+        $unit,
+        $paper_type,
+        $thickness
+    ) {
 
 
         $checkAssetCode = $this->conn->prepare("SELECT asset_code FROM assets WHERE asset_code = ?");
@@ -125,12 +141,14 @@ class global_class extends db_connect
         }
 
         $query = $this->conn->prepare(
-            "INSERT INTO `assets` (`asset_code`, `name`, `category_id`, `subcategory_id`, `office_id`, `price`, `condition_status`, `status`, `image`, `description`, `variety`) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+            "INSERT INTO `assets` (`asset_code`, `name`, `category_id`, `subcategory_id`, `office_id`, 
+                    `price`, `condition_status`, `status`, `image`, `description`, `variety`,
+                    `size`, `brand`, `unit`, `paper_type`, `thickness`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
 
         $query->bind_param(
-            "sssssssssss",
+            "ssssssssssssssss",
             $assets_code,
             $assets_name,
             $assets_category,
@@ -141,7 +159,12 @@ class global_class extends db_connect
             $assets_status,
             $assets_imageName,
             $assets_description,
-            $variety_json
+            $variety_json,
+            $size,
+            $brand,
+            $unit,
+            $paper_type,
+            $thickness
         );
         if ($query->execute()) {
             return 'success';
@@ -274,6 +297,39 @@ class global_class extends db_connect
             $result = $query->get_result();
             return $result;
         }
+    }
+
+    public function fetch_all_assets_2($id)
+    {
+        // Check if the ID is not set or is 0, then fetch all assets
+        if (empty($id) || $id == 0) {
+            // Fetch all assets if no ID or 0 is passed
+            $query = $this->conn->prepare("SELECT assets.*, categories.category_name, categories.id as cat_id,
+                    subcategories.subcategory_name, subcategories.id as sub_id, offices.office_name, offices.id as off_id
+                FROM `assets`
+                LEFT JOIN categories ON categories.id = assets.category_id
+                LEFT JOIN subcategories ON subcategories.id = assets.subcategory_id
+                LEFT JOIN offices ON offices.id = assets.office_id");
+        } else {
+            // If ID is provided, filter by category ID
+            $query = $this->conn->prepare("SELECT assets.*, categories.category_name, categories.id as cat_id,
+                    subcategories.subcategory_name, subcategories.id as sub_id, offices.office_name, offices.id as off_id
+                FROM `assets`
+                LEFT JOIN categories ON categories.id = assets.category_id
+                LEFT JOIN subcategories ON subcategories.id = assets.subcategory_id
+                LEFT JOIN offices ON offices.id = assets.office_id
+                WHERE categories.id = ?");
+
+            // Bind the parameter to the query
+            $query->bind_param("i", $id); // "i" means integer
+        }
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+
+        return false; // Return false if query execution fails
     }
 
 
@@ -493,6 +549,123 @@ class global_class extends db_connect
             LEFT JOIN assets ON assets.id = request_item.r_item_asset_id
             ORDER BY request.request_id DESC
         ");
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+    }
+
+    public function fetch_all_request_report_detailed($month = null, $year = null)
+    {
+        $baseSQL = "
+            SELECT 
+                request.request_id,
+                request.request_invoice,
+                request.request_designation,
+                request.request_date,
+                request.request_user_id,
+                request.request_status,
+                request.request_supplier_name,
+                request.request_supplier_company,
+                
+                -- User Fields
+                users.id AS user_id,
+                users.fullname AS user_fullname,
+                users.email AS user_email,
+                users.user_id,
+                users.designation AS user_designation,
+                
+                -- Assets Fields
+                assets.id AS assets_id,
+                assets.name AS assets_name,
+                assets.price AS assets_price,
+    
+                -- Request item Fields
+                request_item.r_item_qty AS request_qty,
+                request_item.r_item_variety AS request_variety
+    
+            FROM `request`
+            LEFT JOIN users ON users.id = request.request_user_id
+            LEFT JOIN request_item ON request_item.r_request_id = request.request_id 
+            LEFT JOIN assets ON assets.id = request_item.r_item_asset_id
+        ";
+
+        $conditions = [];
+        $params = [];
+        $types = "";
+
+        if ($month !== null) {
+            $conditions[] = "MONTH(request.request_date) = ?";
+            $params[] = $month;
+            $types .= "i";
+        }
+
+        if ($year !== null) {
+            $conditions[] = "YEAR(request.request_date) = ?";
+            $params[] = $year;
+            $types .= "i";
+        }
+
+        if (!empty($conditions)) {
+            $baseSQL .= " WHERE " . implode(" AND ", $conditions);
+        }
+
+        $baseSQL .= " ORDER BY request.request_id DESC";
+
+        $query = $this->conn->prepare($baseSQL);
+
+        if (!empty($params)) {
+            $query->bind_param($types, ...$params);
+        }
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+
+        return false;
+    }
+
+
+
+    public function fetch_all_request_report_monthly()
+    {
+        $query = $this->conn->prepare("
+        SELECT 
+            request.request_id,
+            request.request_invoice,
+            request.request_designation,
+            request.request_date,
+            request.request_user_id,
+            request.request_status,
+            request.request_supplier_name,
+            request.request_supplier_company,
+            
+            -- User Fields
+            users.id AS user_id,
+            users.fullname AS user_fullname,
+            users.email AS user_email,
+            users.user_id,
+            users.designation AS user_designation,
+            
+            -- Assets Fields
+            assets.id AS assets_id,
+            assets.name AS assets_name,
+            assets.price AS assets_price,
+    
+            -- Request item Fields
+            request_item.r_item_qty AS request_qty,
+            request_item.r_item_variety AS request_variety
+            
+        FROM `request`
+        LEFT JOIN users ON users.id = request.request_user_id
+        LEFT JOIN request_item ON request_item.r_request_id = request.request_id 
+        LEFT JOIN assets ON assets.id = request_item.r_item_asset_id
+        GROUP BY MONTH(request.request_date)
+        ORDER BY MONTH(request.request_date), request.request_id DESC
+    ");
+
 
         if ($query->execute()) {
             $result = $query->get_result();

@@ -22,6 +22,30 @@
 
 <div class="flex justify-center">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl">
+
+
+        <!-- Card 2 (Procurements Report) -->
+        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <h3 class="text-lg font-semibold mb-4">Procurements Report</h3>
+            <p class="text-gray-600 mb-4">Detailed procurement overview.</p>
+            <a href="print_procurement_report">
+                <button class="print-report-procurements bg-red-500 text-white px-4 py-2 rounded-md mt-2">
+                    View Report
+                </button>
+            </a>
+        </div>
+
+        <!-- Card 2 (Procurements Report) -->
+        <div class="bg-white p-6 rounded-lg shadow-md text-center">
+            <h3 class="text-lg font-semibold mb-4">Procurements Report (Monthly Report)</h3>
+            <p class="text-gray-600 mb-4">Detailed procurement overview.</p>
+            <a href="print_procurement_report_m">
+                <button class="print-report-procurements bg-red-500 text-white px-4 py-2 rounded-md mt-2">
+                    View Report
+                </button>
+            </a>
+        </div>
+
         <!-- Card 1 -->
         <div class="bg-white p-6 rounded-lg shadow-md text-center">
             <h3 class="text-lg font-semibold mb-4">Inventory Report</h3>
@@ -31,18 +55,7 @@
                     View Report
                 </button>
             </a>
-           
-        </div>
 
-        <!-- Card 2 (Procurements Report) -->
-        <div class="bg-white p-6 rounded-lg shadow-md text-center">
-            <h3 class="text-lg font-semibold mb-4">Procurements Report</h3>
-            <p class="text-gray-600 mb-4">Detailed procurement overview.</p>
-            <a href="print_procurement_report">
-            <button class="print-report-procurements bg-red-500 text-white px-4 py-2 rounded-md mt-2">
-                View Report
-            </button>
-            </a>
         </div>
     </div>
 </div>

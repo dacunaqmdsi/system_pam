@@ -109,7 +109,7 @@ if (isset($_SESSION['id'])) {
     <button id="toggleAssets" class="w-full flex items-center justify-between text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
         <div class="flex items-center space-x-3">
             <span class="material-icons">work</span>
-            <span>Assets</span>
+            <span>Inventory</span>
         </div>
         <span class="material-icons">expand_more</span>
     </button>
