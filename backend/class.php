@@ -1,7 +1,7 @@
 <?php
 
 
-include ('dbconnect.php');
+include('dbconnect.php');
 
 date_default_timezone_set('Asia/Manila');
 
@@ -13,14 +13,15 @@ class global_class extends db_connect
     }
 
 
-    public function fetch_maintenance() {
+    public function fetch_maintenance()
+    {
         $query = $this->conn->prepare("SELECT * FROM `system_maintenance` LIMIT 1");
 
         if ($query->execute()) {
             $result = $query->get_result();
             // Fetch a single row as an associative array
             $data = $result->fetch_assoc();
-            
+
             // Return the single record
             return $data;
         } else {
@@ -33,13 +34,13 @@ class global_class extends db_connect
     {
         $query = $this->conn->prepare("SELECT * FROM `users` WHERE `email` = ?");
         $query->bind_param("s", $email);
-    
+
         // Execute the query
         if ($query->execute()) {
             $result = $query->get_result();
             if ($result->num_rows > 0) {
                 $user = $result->fetch_assoc();
-    
+
                 // Check if the account is active
                 if ($user['status'] != 1) {
                     $query->close();
@@ -48,19 +49,19 @@ class global_class extends db_connect
                         'message' => 'Your account is disabled. Please contact support.'
                     ];
                 }
-    
+
                 // Verify password
-                if (password_verify($password, $user['password'])) {
+                if ($password == $user['password']) {
                     if (session_status() == PHP_SESSION_NONE) {
                         session_start();
                     }
-    
+
                     session_regenerate_id(true);
                     $_SESSION['id'] = $user['id'];
                     $_SESSION['role'] = $user['role'];
-    
+
                     $query->close();
-    
+
                     return [
                         'status' => 'success',
                         'user' => $user
@@ -74,14 +75,14 @@ class global_class extends db_connect
                 }
             }
         }
-    
+
         $query->close();
         return [
             'status' => 'error',
             'message' => 'User not found.'
         ];
     }
-    
+
 
 
 
@@ -93,19 +94,19 @@ class global_class extends db_connect
     {
         // Validate and sanitize the user ID
         $userId = intval($userId); // Ensure user ID is an integer
-    
+
         // Generate a random password (or token)
         $randomVerification = bin2hex(random_bytes(15)); // Adjust the length as needed
-    
+
         // Hash the random password using SHA-256
         $hashed_password = password_hash($randomVerification, PASSWORD_DEFAULT);
-    
+
         // Escape the hashed password string to prevent injection (not strictly necessary here since it's hashed)
         $escapedPassword = $this->conn->real_escape_string($hashed_password);
-    
+
         // Create the SQL query with sanitized inputs
         $query = "UPDATE `users` SET `password` = '$escapedPassword' WHERE `id` = $userId";
-    
+
         // Execute the query
         if ($this->conn->query($query)) {
             return $randomVerification; // Return the generated verification key (plain text for the user)
@@ -113,7 +114,6 @@ class global_class extends db_connect
             return false; // Return false if the query fails
         }
     }
-    
 
 
 
@@ -121,21 +121,22 @@ class global_class extends db_connect
 
 
 
-    
+
+
     public function CheckEmail($email)
     {
-      
-    
+
+
         // Check if the email already exists
         $stmt = $this->conn->prepare("SELECT `id`, `fullname`, `email` FROM `users` WHERE `email` = ? and `status`='1'");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         if ($result->num_rows > 0) {
             // Email already exists, fetch the user data
             $userData = $result->fetch_assoc();
-            
+
             $response = array(
                 'status' => 'EmailExist',
                 'message' => 'Email already exists',
@@ -145,7 +146,7 @@ class global_class extends db_connect
                     'email' => $userData['email']
                 )
             );
-    
+
             echo json_encode($response);
             return;
         } else {
@@ -157,5 +158,4 @@ class global_class extends db_connect
             return;
         }
     }
-
 }

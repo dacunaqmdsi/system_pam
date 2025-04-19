@@ -1,4 +1,4 @@
-<?php include "components/header.php";?>
+<?php include "components/header.php"; ?>
 
 <!-- Top bar with user profile -->
 <div class="flex justify-between items-center bg-white p-4 mb-6 rounded-md shadow-md">
@@ -23,13 +23,28 @@
 <!-- Form for logo, system name, and color theme -->
 <div class="max-w-4xl mx-auto p-6 bg-white rounded-md shadow-md">
     <form id="frmUpdatePassword">
-         <!-- Spinner -->
-            <div class="spinner" id="spinner" style="display:none;">
-                <div class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
-                    <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                </div>
+        <!-- Spinner -->
+        <div class="spinner" id="spinner" style="display:none;">
+            <div class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center">
+                <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
+        </div>
         <!-- System Name -->
+        <div class="mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-700">Username</label>
+            <input type="text" id="text" name="email" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New User Name" />
+        </div>
+
+        <div class="mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-700">Fullname</label>
+            <input type="text" id="text" name="fullname" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New Full Name" />
+        </div>
+
+        <div class="mb-6">
+            <label for="password" class="block text-sm font-medium text-gray-700">Nickname</label>
+            <input type="text" id="text" name="nickname" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New Nickname" />
+        </div>
+
         <div class="mb-6">
             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
             <input type="password" id="password" name="password" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter Password" />
@@ -40,7 +55,7 @@
             <input type="password" id="cpassword" name="cpassword" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter Confirm Password" />
         </div>
 
-        
+
 
         <!-- Submit Button -->
         <div class="flex justify-end">
@@ -55,4 +70,4 @@
 
 
 
-<?php include "components/footer.php";?>
+<?php include "components/footer.php"; ?>

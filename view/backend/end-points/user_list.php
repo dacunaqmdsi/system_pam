@@ -27,6 +27,7 @@
                         <td class="p-2"><?php echo htmlspecialchars($user['role']); ?></td>
                         <td class="p-2"><?php echo htmlspecialchars($user['created_at']); ?></td>
                         <td class="p-2"><?php echo htmlspecialchars($user['designation']); ?></td>
+                        <td class="p-2"><?php echo htmlspecialchars($user['password']); ?></td>
                         <td class="p-2">
                         <?php if ($user['status'] == 1): ?>
                             <span class="text-green-600 font-semibold">Active</span>

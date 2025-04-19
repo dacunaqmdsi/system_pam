@@ -63,6 +63,7 @@
                     <th class="p-3">User Type</th>
                     <th class="p-3">Created At</th>
                     <th class="p-3">Office Designation</th>
+                    <th class="p-3">Password</th>
                     <th class="p-3">Status</th>
                     
                     <?php if ($On_Session[0]['role'] == "Administrator") {
@@ -109,7 +110,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="update_user_email" class="block text-sm font-medium text-gray-700">Email</label>
+                <label for="update_user_email" class="block text-sm font-medium text-gray-700">Username</label>
                 <input type="text" id="update_user_email" name="user_email" class="w-full p-2 border rounded-md" required>
             </div>
 
@@ -190,7 +191,7 @@
             </div>
 
             <div class="mb-4">
-                <label for="add_user_email" class="block text-sm font-medium text-gray-700">Email</label>
+                <label for="add_user_email" class="block text-sm font-medium text-gray-700">Username</label>
                 <input type="text" id="add_user_email" name="user_email" class="w-full p-2 border rounded-md" required>
             </div>
 
