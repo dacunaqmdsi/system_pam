@@ -52,49 +52,6 @@
         </form>
     </div>
 
-    <!-- Under Maintenance Assets Card -->
-    <div class="bg-white rounded-xl shadow p-6">
-
-        <!-- Header -->
-        <div class="flex flex-col sm:flex-row justify-between items-center mb-4">
-            <h2 class="text-xl font-semibold text-gray-800 mb-2 sm:mb-0">Under Maintenance Assets</h2>
-
-            <!-- Search Bar -->
-            <div class="relative w-full sm:w-80">
-                <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                    <i class="material-icons text-base">search</i>
-                </span>
-                <input type="text" id="searchInput" placeholder="Search assets..."
-                       class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
-            </div>
-        </div>
-
-        <!-- Table -->
-        <div class="overflow-x-auto rounded-lg border border-gray-200">
-            <table id="userTable" class="min-w-full divide-y divide-gray-200 text-sm text-gray-700">
-                <thead class="bg-gray-100 text-left">
-                    <tr>
-                        <th class="p-3 font-medium">#</th>
-                        <th class="p-3 font-medium">Image</th>
-                        <th class="p-3 font-medium">Asset ID</th>
-                        <th class="p-3 font-medium">Name</th>
-                        <th class="p-3 font-medium">Description</th>
-                        <th class="p-3 font-medium">Category</th>
-                        <th class="p-3 font-medium">Subcategory</th>
-                        <th class="p-3 font-medium">Condition</th>
-                        <th class="p-3 font-medium">Office</th>
-                        <th class="p-3 font-medium">Purchase Date</th>
-                        <th class="p-3 font-medium">Status</th>
-                        <th class="p-3 font-medium">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    <?php include "backend/end-points/under_maintinance_list.php"; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
 </div>
 
 <!-- Search Function -->

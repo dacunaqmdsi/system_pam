@@ -59,7 +59,7 @@
                     <th class="p-3">Invoice</th>
                     <th class="p-3">Department</th>
                     <th class="p-3">Request By</th>
-                    <th class="p-3">Supplier Name</th>
+                    <!-- <th class="p-3">Supplier Name</th> -->
 
                     <th class="p-3">Designation</th>
                     <th class="p-3">Request Date</th>

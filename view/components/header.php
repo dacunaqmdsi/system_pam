@@ -91,10 +91,11 @@ if (isset($_SESSION['id'])) {
                         <span class="material-icons">manage_accounts</span>
                         <span>User Management</span>
                     </a>
+
                 <?php } ?>
 
 
-                <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education") { ?>
+                <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") { ?>
 
 
                 <?php } else { ?>
@@ -114,14 +115,14 @@ if (isset($_SESSION['id'])) {
                 <?php } ?>
 
 
-                <?php if ($_SESSION['role'] == "Head Finance") { ?>
+                <?php if ($_SESSION['role'] == "Head Finance" || $_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
                     <a href="purchase-order" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                         <span class="material-icons">receipt_long</span>
                         <span>Purchase Order</span>
                     </a>
                 <?php } ?>
 
-                <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education") { ?>
+                <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") { ?>
                     <a href="request" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                         <span class="material-icons">manage_accounts</span>
                         <span>Requisition</span>
@@ -153,6 +154,12 @@ if (isset($_SESSION['id'])) {
                                 0
                             </span>
                         <?php } ?>
+                    </a>
+
+                    <a href="maintenance-item" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                        <span class="material-icons">build</span>
+
+                        <span>Maintenance</span>
                     </a>
 
 

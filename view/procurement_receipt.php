@@ -55,8 +55,8 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                 <th class="border p-2">Request Item</th>
                 <th class="border p-2">Variety</th>
                 <th class="border p-2">Request Quantity</th>
-                <th class="border p-2">Price</th>
-                <th class="border p-2">Total</th>
+                <!-- <th class="border p-2">Price</th>
+                <th class="border p-2">Total</th> -->
                 <th class="border p-2">Input Price (Head Finance)</th>
             </tr>
         </thead>
@@ -70,9 +70,19 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                         <td class="border p-2 text-center"><?= $item['name'] ?></td>
                         <td class="border p-2 text-center"><?= $item['r_item_variety'] ?? 'N/A' ?></td>
                         <td class="border p-2 text-center"><?= $item['r_item_qty'] ?></td>
-                        <td class="border p-2 text-center">₱<?= number_format($item['r_item_price'], 2) ?></td>
-                        <td class="border p-2 text-center">₱<?= number_format($total_price, 2) ?></td>
-                        <td class="border p-2 text-center"><input type="number" value="<?=$item['r_finance_price']?>" placeholder="Price" class="bg-gray-200" id="r_finance_price<?= $item['r_item_id'] ?>" name="r_finance_price" /><button onclick="save_price(<?= $item['r_item_id'] ?>);">Save</button></td>
+                        <!-- <td class="border p-2 text-center">₱<?= number_format($item['r_item_price'], 2) ?></td>
+                        <td class="border p-2 text-center">₱<?= number_format($total_price, 2) ?></td> -->
+                        <td class="border p-2 text-center"><input type="number" value="<?= $item['r_finance_price'] ?>" placeholder="Price" class="bg-gray-200" id="r_finance_price<?= $item['r_item_id'] ?>" name="r_finance_price" />
+
+
+                            <?php if ($_SESSION['role'] == "Head Finance") { ?>
+
+                                <button onclick="save_price(<?= $item['r_item_id'] ?>);">Save</button>
+
+                            <?php } ?>
+
+
+                        </td>
                         <span id="tmp"></span>
                     </tr>
                 <?php endforeach; ?>

@@ -197,6 +197,7 @@ if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads")
                     <select name="user_type" id="add_user_type" class="w-full p-2 border rounded-md" required>
                         <option value="Administrator">Administrator</option>
                         <option value="Office Heads">Office Heads</option>
+                        <option value="Head IACEPO & NSTP">Head IACEPO & NSTP</option>
                         <option value="IACEPO & NSTP">IACEPO & NSTP</option>
                         <option value="Head Finance">Head Finance</option>
                         <option value="Finance">Finance</option>

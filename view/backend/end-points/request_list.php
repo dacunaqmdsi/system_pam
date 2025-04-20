@@ -7,6 +7,10 @@ if ($On_Session[0]['role'] == "Administrator") {
     $fetch_all_user = $db->fetch_all_request_for_finance();
 } else if ($On_Session[0]['role'] == "Head Library") {
     $fetch_all_user = $db->fetch_all_request_for_head($On_Session[0]['role']);
+} else if ($On_Session[0]['role'] == "Head IACEPO & NSTP") {
+    $fetch_all_user = $db->fetch_all_request_for_head($On_Session[0]['role']);
+} else if ($On_Session[0]['role'] == "Head Basic Education") {
+    $fetch_all_user = $db->fetch_all_request_for_head($On_Session[0]['role']);
 } else {
     $fetch_all_user = $db->fetch_all_request($_SESSION['id']);
 }
@@ -23,7 +27,7 @@ if ($fetch_all_user->num_rows > 0):
 
             <td class="p-2"><?php echo htmlspecialchars($user['request_invoice']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['user_fullname'])); ?></td>
-            <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['request_supplier_name'])); ?></td>
+            <!-- <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['request_supplier_name'])); ?></td> -->
             <td class="p-2"><?php echo htmlspecialchars($user['request_designation']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['request_date']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['request_status']); ?></td>
@@ -59,7 +63,7 @@ if ($fetch_all_user->num_rows > 0):
 
 
                     <!-- Other heads -->
-                    <?php if (isset($On_Session[0]['role']) && ($On_Session[0]['role'] == "Head Library" || $On_Session[0]['role'] == "Head Basic Education")) { ?>
+                    <?php if (isset($On_Session[0]['role']) && ($On_Session[0]['role'] == "Head Library" || $On_Session[0]['role'] == "Head Basic Education" || $On_Session[0]['role'] == "Head IACEPO & NSTP")) { ?>
                         <select class="togglerRequest bg-blue-500 text-white py-1 px-3 rounded-md"
                             data-request_id="<?= htmlspecialchars($user['request_id']) ?>"
                             aria-label="Select User Status">
