@@ -449,9 +449,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $asset_id = $_POST['asset_id'];
         $qty = $_POST['qty'];
         $variety = $_POST['variety'];
+        $specification = $_POST['specification'];
 
 
-        $result = $db->AddCart($add_id, $asset_id, $qty, $variety);
+        $result = $db->AddCart($add_id, $asset_id, $qty, $variety, $specification);
 
         if ($result == "success") {
             echo json_encode(["status" => 200, "message" => "Successfully Added"]);

@@ -74,7 +74,7 @@
                             <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i>
                         <?php endif; ?>
                         <h3 class="font-bold"><?php echo htmlspecialchars(ucfirst($assets['name'])); ?></h3>
-                        <p class="text-gray-600">₱<?php echo htmlspecialchars(number_format($assets['price'], 2)); ?></p>
+                        <!-- <p class="text-gray-600">₱<?php echo htmlspecialchars(number_format($assets['price'], 2)); ?></p> -->
                         <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded togglerViewCart"
                             data-asset_id='<?= $assets['id'] ?>'
                             data-name='<?= ucfirst($assets['name']) ?>'
@@ -205,6 +205,10 @@
                         <option value="option3">Option 3</option>
                     </select>
                     <label for="variety" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Variety</label>
+                </div>
+
+                <div class="relative mb-4">
+                    <input type="text" id="specification" name="specification" placeholder="Specification" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
                 </div>
             </div>
             <button type="submit" id="BtnaddToCart" class="px-4 py-2 bg-green-500 text-white rounded">Add to cart</button>

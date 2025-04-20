@@ -371,23 +371,23 @@ class global_class extends db_connect
 
 
 
-    public function AddCart($add_id, $asset_id, $qty, $variety)
+    public function AddCart($add_id, $asset_id, $qty, $variety, $specification)
     {
         // Check if the asset already exists in the cart
-        $checkQuery = $this->conn->prepare("SELECT cart_qty FROM request_cart WHERE cart_user_id = ? AND cart_asset_id = ? AND cart_variety = ?");
-        $checkQuery->bind_param("iis", $add_id, $asset_id, $variety);
+        $checkQuery = $this->conn->prepare("SELECT cart_qty FROM request_cart WHERE cart_user_id = ? AND cart_asset_id = ? AND cart_variety = ? AND specification = ?");
+        $checkQuery->bind_param("iiss", $add_id, $asset_id, $variety, $specification);
         $checkQuery->execute();
         $result = $checkQuery->get_result();
 
         if ($result->num_rows > 0) {
             // Item exists, update the quantity
-            $updateQuery = $this->conn->prepare("UPDATE request_cart SET cart_qty = cart_qty + $qty WHERE cart_user_id = ? AND cart_asset_id = ? AND cart_variety = ?");
-            $updateQuery->bind_param("iis", $add_id, $asset_id, $variety);
+            $updateQuery = $this->conn->prepare("UPDATE request_cart SET cart_qty = cart_qty + $qty WHERE cart_user_id = ? AND cart_asset_id = ? AND cart_variety = ? AND specification = ?");
+            $updateQuery->bind_param("iiss", $add_id, $asset_id, $variety, $specification);
             return $updateQuery->execute();
         } else {
             // Item does not exist, insert a new row
-            $insertQuery = $this->conn->prepare("INSERT INTO request_cart (cart_user_id, cart_asset_id, cart_qty, cart_variety) VALUES (?, ?, ?,?)");
-            $insertQuery->bind_param("iiis", $add_id, $asset_id, $qty, $variety);
+            $insertQuery = $this->conn->prepare("INSERT INTO request_cart (cart_user_id, cart_asset_id, cart_qty, cart_variety, specification) VALUES (?, ?, ?,?, ?)");
+            $insertQuery->bind_param("iiiss", $add_id, $asset_id, $qty, $variety, $specification);
             return $insertQuery->execute();
         }
     }

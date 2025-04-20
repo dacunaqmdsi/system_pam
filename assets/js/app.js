@@ -7,7 +7,7 @@ $("#frmLogin").submit(function (e) {
     
     // Validate email
     if (!email) {
-        alertify.error("email is required");    
+        alertify.error("username is required");    
         return;
     }
     
