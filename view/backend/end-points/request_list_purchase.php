@@ -22,6 +22,7 @@ if ($fetch_all_user->num_rows > 0):
             <td class="p-2"><?php echo $count++; ?></td>
 
             <td class="p-2"><?php echo htmlspecialchars($user['request_invoice']); ?></td>
+            <td class="p-2"><?php echo htmlspecialchars($user['role']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['user_fullname'])); ?></td>
             <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['request_supplier_name'])); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['request_designation']); ?></td>
@@ -80,6 +81,11 @@ if ($fetch_all_user->num_rows > 0):
 
                     <!-- Head of Finance -->
                     <?php if (isset($On_Session[0]['role']) && $On_Session[0]['role'] == "Head Finance") { ?>
+
+
+
+
+
                         <select class="togglerRequest bg-blue-500 text-white py-1 px-3 rounded-md"
                             data-request_id="<?= htmlspecialchars($user['request_id']) ?>"
                             aria-label="Select User Status">
@@ -102,6 +108,8 @@ if ($fetch_all_user->num_rows > 0):
                                 <option value="Decline" class="text-red-500" <?= $user['request_status'] == 'Decline' ? 'selected' : '' ?>>Decline</option>
                             <?php } ?>
                         </select>
+
+
                     <?php } ?>
 
 

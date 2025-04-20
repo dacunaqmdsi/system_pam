@@ -36,6 +36,8 @@ if ($fetch_all_user->num_rows > 0):
             </td>
 
             <td class="p-2"><?php echo htmlspecialchars($user['asset_code']); ?></td>
+
+
             <td class="p-2"><?php echo htmlspecialchars($user['name']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['description']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['category_name']); ?></td>

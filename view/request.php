@@ -96,9 +96,9 @@
         <div id="cartItemsList" class="mb-2">
             <!-- Cart items will be injected here -->
         </div>
-        <p class="font-bold">Total: <span id="cartTotalPrice">₱0.00</span></p>
+        <p class="font-bold">Total: <span id="cartTotalPrice">₱0.00</span></p> 
         <!-- id="btnSendRequest" -->
-        <button class="mt-4 w-full bg-green-500 text-white py-2 rounded " id="confirmRequest">Send Request</button>
+        <button class="mt-4 w-full bg-green-500 text-white py-2 rounded " id="confirmRequest" >Send Request</button>
     </div>
 
 </div>

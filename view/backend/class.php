@@ -512,6 +512,79 @@ class global_class extends db_connect
         }
     }
 
+    public function fetch_all_request_for_finance()
+    {
+        $query = $this->conn->prepare("
+            SELECT 
+                request.request_id,
+                request.request_invoice,
+                request.request_designation,
+                request.request_date,
+                request.request_user_id,
+                request.request_status,
+                request.request_supplier_name,
+                request.request_supplier_company,
+              
+                
+                -- User Fields
+                users.id AS user_id,
+                users.fullname AS user_fullname,
+                users.email AS user_email,
+                users.user_id,
+                users.designation as user_designation,
+                users.role
+            FROM `request`
+            LEFT JOIN users ON users.id = request.request_user_id
+            WHERE request.status='1'
+            ORDER BY request.request_id DESC
+        ");
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+    }
+
+    public function fetch_all_request_for_head($role)
+    {
+        $str = "";
+        if ($role == "Head Library") {
+            $str = " AND (users.role='Head Library' OR users.role='Library')";
+        }
+
+        $query = $this->conn->prepare("
+            SELECT 
+                request.request_id,
+                request.request_invoice,
+                request.request_designation,
+                request.request_date,
+                request.request_user_id,
+                request.request_status,
+                request.request_supplier_name,
+                request.request_supplier_company,
+    
+                users.id AS user_id,
+                users.fullname AS user_fullname,
+                users.email AS user_email,
+                users.user_id,
+                users.designation as user_designation,
+                users.role
+            FROM `request`
+            LEFT JOIN users ON users.id = request.request_user_id
+            WHERE request.status='1'
+            $str
+            ORDER BY request.request_id DESC
+        ");
+
+        if ($query->execute()) {
+            return $query->get_result();
+        }
+
+        return false; // optional: handle query failure
+    }
+
+
+
 
 
     public function fetch_all_request_report()
@@ -758,6 +831,8 @@ class global_class extends db_connect
         $query = $this->conn->prepare("SELECT 
                 -- User Fields
                 request_item.r_request_id,
+                request_item.r_item_id,
+                request_item.r_finance_price,
                 request_item.r_item_qty,
                 request_item.r_item_price,
                 request_item.r_item_variety,

@@ -462,9 +462,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else if ($_POST['requestType'] == 'confirmRequest') {
         session_start();
         $add_id = intval($_SESSION['id']);
-        $supplier_name = $_POST['supplier_name'];
-        $supplier_company = $_POST['supplier_company'];
-        $designation = $_POST['designation'];
+        $supplier_name = '';
+        $supplier_company = '';
+        $designation = '';
         // $cart_items = $_POST['cart_items'];
 
 
