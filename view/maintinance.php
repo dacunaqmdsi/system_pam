@@ -1,5 +1,90 @@
 <?php include "components/header.php"; ?>
+<?php
+// Database connection
+$conn = mysqli_connect("localhost", "root", "", "pam");
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
 
+// Fetch maintenance data
+$query = "SELECT * FROM maintenance_table";
+$result = mysqli_query($conn, $query);
+?>
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+<style>
+    .radio-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .container {
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .custom-table th,
+    .custom-table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .radio-group {
+        display: flex;
+        gap: 10px;
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .add-assets-button {
+        background-color: #ef4444;
+        /* Red */
+        color: white;
+        padding: 10px 16px;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .add-assets-button:hover {
+        background-color: #dc2626;
+    }
+
+    .icon {
+        margin-right: 8px;
+        font-size: 18px;
+    }
+
+    .submit-button {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 16px;
+        font-size: 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .submit-button:hover {
+        background-color: #0056b3;
+    }
+</style>
 <!-- Page Wrapper -->
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
@@ -23,10 +108,78 @@
         </div>
     </div>
 
-    <button id="addAssetsButton" class="bg-red-500 text-white py-2 px-4 text-sm rounded-lg flex items-center hover:bg-red-600 transition duration-300 mb-4">
-        <span class="material-icons mr-2 text-base">add</span>
-        Add Assets
-    </button>
+
+    <!-- System Settings Form -->
+    <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">System Settings</h2>
+        <form id="frmMaintenance" class="space-y-6">
+            <!-- Logo Upload -->
+            <div>
+                <label for="logo" class="block text-sm font-medium text-gray-700">Logo</label>
+                <input type="file" id="logo" name="system_logo"
+                    class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm">
+            </div>
+
+            <!-- System Name -->
+            <div>
+                <label for="system_name" class="block text-sm font-medium text-gray-700">System Name</label>
+                <input type="text" id="system_name" name="system_name" value="<?= $maintenance['system_name'] ?>"
+                    class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm"
+                    placeholder="Enter system name">
+            </div>
+
+            <!-- Save Button -->
+            <div class="flex justify-end">
+                <button type="submit" id="BtnMaintenance"
+                    class="inline-flex items-center px-6 py-2 bg-red-600 text-white font-semibold rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container">
+        <form method="post" action="update_maintenance.php">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($row['name']); ?></td>
+                            <td>
+                                <div class="radio-group">
+                                    <label>
+                                        <input type="radio" name="status[<?php echo $row['id']; ?>]" value="0" <?php echo $row['is_closed'] == 0 ? 'checked' : ''; ?>>
+                                        Open
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="status[<?php echo $row['id']; ?>]" value="1" <?php echo $row['is_closed'] == 1 ? 'checked' : ''; ?>>
+                                        Close
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+
+            <div class="action-buttons">
+                <button id="addAssetsButton" class="add-assets-button">
+                    <span class="material-icons icon">add</span>
+                    Add Assets
+                </button>
+                <button type="submit" class="submit-button">
+                    Update Status
+                </button>
+            </div>
+        </form>
+    </div>
+
 
     <!-- Modal for Adding Promo -->
     <div id="addAssetsModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center" style="display:none;">
@@ -287,35 +440,6 @@
         </div>
     </div>
 
-
-    <!-- System Settings Form -->
-    <div class="bg-white rounded-xl shadow p-6">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">System Settings</h2>
-        <form id="frmMaintenance" class="space-y-6">
-            <!-- Logo Upload -->
-            <div>
-                <label for="logo" class="block text-sm font-medium text-gray-700">Logo</label>
-                <input type="file" id="logo" name="system_logo"
-                    class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm">
-            </div>
-
-            <!-- System Name -->
-            <div>
-                <label for="system_name" class="block text-sm font-medium text-gray-700">System Name</label>
-                <input type="text" id="system_name" name="system_name" value="<?= $maintenance['system_name'] ?>"
-                    class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm"
-                    placeholder="Enter system name">
-            </div>
-
-            <!-- Save Button -->
-            <div class="flex justify-end">
-                <button type="submit" id="BtnMaintenance"
-                    class="inline-flex items-center px-6 py-2 bg-red-600 text-white font-semibold rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
-                    Save Changes
-                </button>
-            </div>
-        </form>
-    </div>
 
 </div>
 

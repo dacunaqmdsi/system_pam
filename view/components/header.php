@@ -28,6 +28,29 @@ if (isset($_SESSION['id'])) {
 } else {
     header('location: ../');
 }
+
+
+$conn = mysqli_connect("localhost", "root", "", "pam");
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+
+function isNavClosed($conn, $navId)
+{
+    $stmt = $conn->prepare("SELECT is_closed FROM maintenance_table WHERE id = ?");
+    $stmt->bind_param("i", $navId); // assuming $navId is an integer
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        return (int)$row['is_closed'] === 1; // returns true if closed
+    }
+
+    return false; // explicitly return false if not found
+}
+
+
 ?>
 
 
@@ -50,6 +73,7 @@ if (isset($_SESSION['id'])) {
 
 
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
 
 </head>
 
@@ -100,27 +124,47 @@ if (isset($_SESSION['id'])) {
 
                 <?php } else { ?>
 
-                    <a href="requestManagement" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
-                        <span class="material-icons">shopping_cart</span>
-                        <span>Procurements</span>
-                        <?php if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
-                            <span id="PendingCounts" class="bg-red-500 text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center ">
-                                0
-                            </span>
-                        <?php } ?>
-                    </a>
+                    <?php if (isNavClosed($conn, 1)) { ?>
+                        <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">shopping_cart</span>
+                            <span>Procurements</span>
+                            <?php if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
+                                <span id="PendingCounts" class="bg-red-500 text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center ">
+                                    0
+                                </span>
+                            <?php } ?>
+                        </a>
+                    <?php  } else { ?>
+                        <a href="requestManagement" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">shopping_cart</span>
+                            <span>Procurements</span>
+                            <?php if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
+                                <span id="PendingCounts" class="bg-red-500 text-white text-xs font-semibold rounded-full w-5 h-5 flex items-center justify-center ">
+                                    0
+                                </span>
+                            <?php } ?>
+                        </a>
 
-
-
+                    <?php } ?>
                 <?php } ?>
 
 
-                <?php if ($_SESSION['role'] == "Head Finance" || $_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
-                    <a href="purchase-order" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
-                        <span class="material-icons">receipt_long</span>
-                        <span>Purchase Order</span>
-                    </a>
+                <?php if (isNavClosed($conn, 2)) { ?>
+                    <?php if ($_SESSION['role'] == "Head Finance" || $_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
+                        <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">receipt_long</span>
+                            <span>Purchase Order</span>
+                        </a>
+                    <?php } ?>
+                <?php  } else { ?>
+                    <?php if ($_SESSION['role'] == "Head Finance" || $_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
+                        <a href="purchase-order" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">receipt_long</span>
+                            <span>Purchase Order</span>
+                        </a>
+                    <?php } ?>
                 <?php } ?>
+
 
                 <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") { ?>
                     <a href="request" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
@@ -141,9 +185,24 @@ if (isset($_SESSION['id'])) {
                         <span class="material-icons">expand_more</span>
                     </button>
                     <div id="assetsDropdown" class="ml-8 space-y-2 hidden">
-                        <a href="receive_logs" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Receive Logs</a>
-                        <a href="manage_assets" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Assets</a>
-                        <a href="inventory" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Inventory</a>
+                        <?php if (isNavClosed($conn, 9)) { ?>
+                            <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Receive Logs</a>
+                        <?php  } else { ?>
+                            <a href="receive_logs" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Receive Logs</a>
+                        <?php } ?>
+
+
+                        <?php if (isNavClosed($conn, 6)) { ?>
+                            <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Assets</a>
+                        <?php  } else { ?>
+                            <a href="manage_assets" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Assets</a>
+                        <?php } ?>
+
+                        <?php if (isNavClosed($conn, 8)) { ?>
+                            <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Inventory</a>
+                        <?php  } else { ?>
+                            <a href="inventory" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Inventory</a>
+                        <?php } ?>
                     </div>
 
                     <a href="maintinance" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
@@ -162,18 +221,35 @@ if (isset($_SESSION['id'])) {
                         <span>Maintenance</span>
                     </a>
 
+                    <?php if (isNavClosed($conn, 4)) { ?>
+                        <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">bar_chart</span>
+                            <span>Report Generation</span>
+                        </a>
+                    <?php  } else { ?>
+                        <a href="reports" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">bar_chart</span>
+                            <span>Report Generation</span>
+                        </a>
+                    <?php } ?>
 
-                    <a href="reports" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
-                        <span class="material-icons">bar_chart</span>
-                        <span>Report Generation</span>
-                    </a>
 
                 <?php } ?>
 
-                <a href="settings" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
-                    <span class="material-icons">settings</span>
-                    <span>Account Settings</span>
-                </a>
+
+                <?php if (isNavClosed($conn, 5)) { ?>
+                    <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                        <span class="material-icons">settings</span>
+                        <span>Account Settings</span>
+                    </a>
+
+                <?php  } else { ?>
+                    <a href="settings" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                        <span class="material-icons">settings</span>
+                        <span>Account Settings</span>
+                    </a>
+
+                <?php } ?>
 
 
                 <button class="btnLogout flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-red-500 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
