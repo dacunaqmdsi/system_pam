@@ -499,6 +499,7 @@ class global_class extends db_connect
                 users.fullname AS user_fullname,
                 users.email AS user_email,
                 users.user_id,
+                users.role,
                 users.designation as user_designation
             FROM `request`
             LEFT JOIN users ON users.id = request.request_user_id
@@ -767,6 +768,7 @@ class global_class extends db_connect
                 users.fullname AS user_fullname,
                 users.email AS user_email,
                 users.user_id,
+                users.role,
                 users.designation as user_designation
                
                 
