@@ -27,7 +27,7 @@ $maintenance = $db->fetch_maintenance();
     <!-- Left side: Description -->
     <div class="bg-red-800 text-white flex flex-col justify-center items-center p-8 md:p-12">
       <img src="assets/logo/<?= $maintenance['system_image'] ?>" alt="Logo" class="w-24 h-24 object-contain mb-4 rounded-full shadow-lg bg-white p-1">
-      <h1 class="text-3xl font-bold mb-2"><?= $maintenance['system_name'] ?></h1>
+      <h1 class="text-1xl font-bold mb-2">Procurement & Assets Management System</h1>
       <p class="text-center text-sm md:text-base">Welcome to the <?= $maintenance['system_name'] ?> portal. Please sign in to continue.</p>
     </div>
 
