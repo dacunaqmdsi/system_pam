@@ -3,6 +3,9 @@
 <?php
 
 // Check if 'id' is passed in the URL, if not use 0 or an empty value to fetch all
+
+//1,2, 4, 5 ASSETS
+//3 Office Supplies
 $id = isset($_GET['id']) ? $_GET['id'] : 0;
 $fetch_all_user = $db->fetch_all_assets_2($id);
 
@@ -24,6 +27,7 @@ if ($fetch_all_user->num_rows > 0):
                 </div>
             </td>
             <td class="p-2">
+
                 <div class="flex items-center justify-center w-12 h-12">
                     <?php if (!empty($user['image'])): ?>
                         <img src="../uploads/images/<?php echo htmlspecialchars($user['image']); ?>"
@@ -35,9 +39,8 @@ if ($fetch_all_user->num_rows > 0):
                 </div>
             </td>
 
+
             <td class="p-2"><?php echo htmlspecialchars($user['asset_code']); ?></td>
-
-
             <td class="p-2"><?php echo htmlspecialchars($user['name']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['description']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['category_name']); ?></td>

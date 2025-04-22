@@ -101,7 +101,7 @@
             <div id="cartItemsList" class="mb-2">
                 <!-- Cart items will be injected here -->
             </div>
-            <p class="font-bold">Total: <span id="cartTotalPrice">₱0.00</span></p>
+            <p hidden class="font-bold">Total: <span id="cartTotalPrice">₱0.00</span></p>
             <!-- id="btnSendRequest" -->
             <button class="mt-4 w-full bg-green-500 text-white py-2 rounded " id="confirmRequest">Send Request</button>
         </div>
@@ -119,10 +119,7 @@
 
 
 <!-- User Table Card -->
-<div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
-
-
-    <!-- Table Wrapper for Responsiveness -->
+<!-- <div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
     <div class="overflow-x-auto">
         <table id="userTable" class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="bg-gray-100 text-gray-700">
@@ -131,7 +128,6 @@
                     <th class="p-3">#</th>
                     <th class="p-3">Invoice</th>
                     <th class="p-3">Request By</th>
-                    <!-- <th class="p-3">Supplier Name</th> -->
 
                     <th class="p-3">Designation</th>
                     <th class="p-3">Request Date</th>
@@ -146,11 +142,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php include "backend/end-points/request_list.php"; ?>
+                <?php //include "backend/end-points/request_list.php"; ?>
             </tbody>
         </table>
     </div>
-</div>
+</div> -->
 
 
 
@@ -385,7 +381,7 @@
                 data: $.param(requestData), // Convert object to URL-encoded string
                 success: function(response) {
 
-                    alertify.success("Request submitted successfully!");
+                    alertify.success("Successfully Processed Request!");
                     $("#sendRequestModal").hide();
                     $("#cartItemsList").html("<p>Your cart is empty.</p>");
                     $("#cartTotalPrice").text("₱0.00");

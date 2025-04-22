@@ -34,73 +34,7 @@
 <!-- User Table Card -->
 <div class="max-w-7xl mx-auto grid grid-cols-12 gap-4">
 
-    <!-- Menu Section -->
-    <div class="col-span-8 bg-white p-4 rounded-xl shadow-md">
-        <h2 class="text-xl font-bold mb-4">Item list</h2>
-        <div class="flex space-x-2 mb-4">
-            <button class="px-4 py-2 bg-blue-500 text-white rounded" id="filterAll">All</button>
-            <?php
-            $fetch_all_category = $db->fetch_all_category();
-            if ($fetch_all_category->num_rows > 0):
-                while ($category = $fetch_all_category->fetch_assoc()):
-            ?>
-                    <button class="px-4 py-2 bg-gray-200 rounded category-filter" data-category_id='<?= $category['id'] ?>'><?= $category['category_name'] ?></button>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <p class="p-2 text-center">No record found.</p>
-            <?php endif; ?>
-        </div>
-        <div class="grid grid-cols-3 gap-4 overflow-y-auto max-h-[600px]" id="assetsContainer">
-
-            <?php
-            $fetch_all_assets = $db->fetch_all_assets_procurment();
-            if ($fetch_all_assets->num_rows > 0):
-                while ($assets = $fetch_all_assets->fetch_assoc()):
-            ?>
-                    <div class="border p-4 rounded-xl shadow-md asset-item" data-category_id='<?= $assets['category_id'] ?>'>
-                        <?php if (!empty($assets['image'])): ?>
-                            <!-- <img src="../uploads/images/<?php echo htmlspecialchars($assets['image']); ?>"
-                                alt="Profile Picture"
-                                class="rounded-md mb-2 w-full h-40 object-cover"> -->
-                            <div class="cursor-pointer togglerViewCart"
-                                data-asset_id='<?= $assets['id'] ?>'
-                                data-name='<?= ucfirst($assets['name']) ?>'
-                                data-variety='<?= $assets['variety'] ?>'>
-                                <img src="../uploads/images/<?php echo htmlspecialchars($assets['image']); ?>"
-                                    alt="Profile Picture"
-                                    class="rounded-md mb-2 w-full h-40 object-cover">
-                            </div>
-                        <?php else: ?>
-                            <i class="material-icons text-gray-500" style="font-size: 3rem;">image</i>
-                        <?php endif; ?>
-                        <h3 class="font-bold"><?php echo htmlspecialchars(ucfirst($assets['name'])); ?></h3>
-                        <!-- <p class="text-gray-600">₱<?php echo htmlspecialchars(number_format($assets['price'], 2)); ?></p> -->
-                        <button class="mt-2 w-full bg-blue-500 text-white py-2 rounded togglerViewCart"
-                            data-asset_id='<?= $assets['id'] ?>'
-                            data-name='<?= ucfirst($assets['name']) ?>'
-                            data-variety='<?= $assets['variety'] ?>'>
-                            <span class="material-icons align-middle mr-1">add</span>
-                        </button>
-
-                    </div>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <p class="p-2 text-center">No record found.</p>
-            <?php endif; ?>
-        </div>
-    </div>
-
-    <!-- Cart Section -->
-    <div class="col-span-4 bg-white p-4 rounded-xl shadow-md">
-        <h2 class="text-xl font-bold mb-4">Request Summary</h2>
-        <div id="cartItemsList" class="mb-2">
-            <!-- Cart items will be injected here -->
-        </div>
-        <p class="font-bold">Total: <span id="cartTotalPrice">₱0.00</span></p> 
-        <!-- id="btnSendRequest" -->
-        <button class="mt-4 w-full bg-green-500 text-white py-2 rounded " id="confirmRequest" >Send Request</button>
-    </div>
-
+   
 </div>
 
 

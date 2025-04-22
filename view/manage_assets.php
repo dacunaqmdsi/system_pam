@@ -48,19 +48,16 @@
                     class="category-tab px-4 py-2 border border-gray-300 rounded-md hover:bg-blue-100 active:bg-blue-200">
                     All
                 </button>
-                <?php
-                $fetch_all_category = $db->fetch_all_category();
-                if ($fetch_all_category->num_rows > 0):
-                    while ($category = $fetch_all_category->fetch_assoc()):
-                ?>
-                        <button type="submit" name="category_id" value="<?= $category['id']; ?>"
-                            class="category-tab px-4 py-2 border border-gray-300 rounded-md hover:bg-blue-100 active:bg-blue-200">
-                            <?= htmlspecialchars($category['category_name']) ?>
-                        </button>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <p class="text-gray-500">No record found.</p>
-                <?php endif; ?>
+
+                <button type="submit" name="category_id" value="10"
+                    class="category-tab px-4 py-2 border border-gray-300 rounded-md hover:bg-blue-100 active:bg-blue-200">
+                    Assets
+                </button>
+
+                <button type="submit" name="category_id" value="3"
+                    class="category-tab px-4 py-2 border border-gray-300 rounded-md hover:bg-blue-100 active:bg-blue-200">
+                    Office Supplies
+                </button>
             </div>
         </form>
 

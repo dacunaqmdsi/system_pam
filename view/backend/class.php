@@ -301,9 +301,17 @@ class global_class extends db_connect
 
     public function fetch_all_assets_2($id)
     {
-        // Check if the ID is not set or is 0, then fetch all assets
-        if (empty($id) || $id == 0) {
-            // Fetch all assets if no ID or 0 is passed
+        if ($id == 10) {
+            // Show assets where category_id is 1, 2, 4, or 5
+            $query = $this->conn->prepare("SELECT assets.*, categories.category_name, categories.id as cat_id,
+            subcategories.subcategory_name, subcategories.id as sub_id, offices.office_name, offices.id as off_id
+            FROM `assets`
+            LEFT JOIN categories ON categories.id = assets.category_id
+            LEFT JOIN subcategories ON subcategories.id = assets.subcategory_id
+            LEFT JOIN offices ON offices.id = assets.office_id WHERE assets.category_id=1 OR assets.category_id=2
+            OR assets.category_id=4 OR assets.category_id=5 ");
+        } elseif (empty($id) || $id == 0) {
+            // Show all assets
             $query = $this->conn->prepare("SELECT assets.*, categories.category_name, categories.id as cat_id,
                     subcategories.subcategory_name, subcategories.id as sub_id, offices.office_name, offices.id as off_id
                 FROM `assets`
@@ -311,7 +319,7 @@ class global_class extends db_connect
                 LEFT JOIN subcategories ON subcategories.id = assets.subcategory_id
                 LEFT JOIN offices ON offices.id = assets.office_id");
         } else {
-            // If ID is provided, filter by category ID
+            // Show assets with exact matching category ID (e.g., 3 or any other specific ID)
             $query = $this->conn->prepare("SELECT assets.*, categories.category_name, categories.id as cat_id,
                     subcategories.subcategory_name, subcategories.id as sub_id, offices.office_name, offices.id as off_id
                 FROM `assets`
@@ -319,9 +327,7 @@ class global_class extends db_connect
                 LEFT JOIN subcategories ON subcategories.id = assets.subcategory_id
                 LEFT JOIN offices ON offices.id = assets.office_id
                 WHERE categories.id = ?");
-
-            // Bind the parameter to the query
-            $query->bind_param("i", $id); // "i" means integer
+            $query->bind_param("i", $id);
         }
 
         if ($query->execute()) {
@@ -329,7 +335,7 @@ class global_class extends db_connect
             return $result;
         }
 
-        return false; // Return false if query execution fails
+        return false;
     }
 
 
@@ -512,6 +518,56 @@ class global_class extends db_connect
             return $result;
         }
     }
+
+    public function fetch_all_request_for_admin_sort($role)
+    {
+        $query = $this->conn->prepare("
+            SELECT 
+                request.request_id,
+                request.request_invoice,
+                request.request_designation,
+                request.request_date,
+                request.request_user_id,
+                request.request_status,
+                request.request_supplier_name,
+                request.request_supplier_company,
+                
+                -- User Fields
+                users.id AS user_id,
+                users.fullname AS user_fullname,
+                users.email AS user_email,
+                users.user_id AS user_user_id,
+                users.role AS user_role,
+                users.designation AS user_designation,
+                
+                -- Request Item Fields
+                request_item.r_item_id,
+                request_item.r_finance_price,
+                request_item.r_item_qty,
+                request_item.r_item_price,
+                request_item.r_item_variety,
+                assets.name AS asset_name
+    
+            FROM `request`
+            LEFT JOIN users ON users.id = request.request_user_id
+            LEFT JOIN request_item ON request_item.r_request_id = request.request_id
+            LEFT JOIN assets ON assets.id = request_item.r_item_asset_id
+            
+            WHERE request.status = '1' AND users.role = ?
+            ORDER BY request.request_id DESC
+        ");
+
+        $query->bind_param("s", $role);  // Bind the role as string
+
+        if ($query->execute()) {
+            $result = $query->get_result();
+            return $result;
+        }
+
+        return null;
+    }
+
+
 
     public function fetch_all_request_for_finance()
     {
@@ -1217,7 +1273,7 @@ class global_class extends db_connect
 
         // Check if password is provided (update only if not empty)
         if (!empty($user_password)) {
-            $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
+            $hashed_password = $user_password;
             $sql .= ", password = ?";
             $params[] = $hashed_password;
             $types .= "s";

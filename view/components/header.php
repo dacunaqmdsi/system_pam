@@ -36,18 +36,22 @@ if (!$conn) {
 }
 
 
-function isNavClosed($conn, $navId)
+function isNavClosed($conn, $navId, $userType)
 {
-    $stmt = $conn->prepare("SELECT is_closed FROM maintenance_table WHERE id = ?");
-    $stmt->bind_param("i", $navId); // assuming $navId is an integer
-    $stmt->execute();
-    $result = $stmt->get_result();
+    if ($userType == "Administrator") {
+        return false;
+    } else {
+        $stmt = $conn->prepare("SELECT is_closed FROM maintenance_table WHERE id = ?");
+        $stmt->bind_param("i", $navId); // assuming $navId is an integer
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    if ($row = $result->fetch_assoc()) {
-        return (int)$row['is_closed'] === 1; // returns true if closed
+        if ($row = $result->fetch_assoc()) {
+            return (int)$row['is_closed'] === 1; // returns true if closed
+        }
+
+        return false; // explicitly return false if not found
     }
-
-    return false; // explicitly return false if not found
 }
 
 
@@ -97,7 +101,13 @@ function isNavClosed($conn, $navId)
                 <img src="../assets/logo/<?= $maintenance['system_image'] ?>" alt="Logo" class="w-20 h-20 rounded-full border-2 border-gray-300 shadow-sm transform transition-transform duration-300 hover:scale-105">
                 <h1 class="text-xl font-bold text-white tracking-tight text-left truncate lg:text-left hover:text-yellow-300 transition-colors duration-300 max-w-[70%]">
                     <?= ucfirst($On_Session[0]['role']) ?>
+                    <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") { ?>
+                        <small style="font-size:11px;" class="text-white">(Secretary)</small>
+                    <?php } else { ?>
+                    <?php } ?>
+
                 </h1>
+
             </div>
 
 
@@ -116,6 +126,11 @@ function isNavClosed($conn, $navId)
                         <span>User Management</span>
                     </a>
 
+                    <a href="request" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                        <span class="material-icons">manage_accounts</span>
+                        <span>Requisition</span>
+                    </a>
+
                 <?php } ?>
 
 
@@ -124,7 +139,7 @@ function isNavClosed($conn, $navId)
 
                 <?php } else { ?>
 
-                    <?php if (isNavClosed($conn, 1)) { ?>
+                    <?php if (isNavClosed($conn, 1, $On_Session[0]['role'])) { ?>
                         <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                             <span class="material-icons">shopping_cart</span>
                             <span>Procurements</span>
@@ -146,10 +161,12 @@ function isNavClosed($conn, $navId)
                         </a>
 
                     <?php } ?>
+
+
                 <?php } ?>
 
 
-                <?php if (isNavClosed($conn, 2)) { ?>
+                <?php if (isNavClosed($conn, 2, $On_Session[0]['role'])) { ?>
                     <?php if ($_SESSION['role'] == "Head Finance" || $_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
                         <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                             <span class="material-icons">receipt_long</span>
@@ -185,20 +202,20 @@ function isNavClosed($conn, $navId)
                         <span class="material-icons">expand_more</span>
                     </button>
                     <div id="assetsDropdown" class="ml-8 space-y-2 hidden">
-                        <?php if (isNavClosed($conn, 9)) { ?>
+                        <?php if (isNavClosed($conn, 9, $On_Session[0]['role'])) { ?>
                             <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Receive Logs</a>
                         <?php  } else { ?>
                             <a href="receive_logs" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Receive Logs</a>
                         <?php } ?>
 
 
-                        <?php if (isNavClosed($conn, 6)) { ?>
+                        <?php if (isNavClosed($conn, 6, $On_Session[0]['role'])) { ?>
                             <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Assets</a>
                         <?php  } else { ?>
                             <a href="manage_assets" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Assets</a>
                         <?php } ?>
 
-                        <?php if (isNavClosed($conn, 8)) { ?>
+                        <?php if (isNavClosed($conn, 8, $On_Session[0]['role'])) { ?>
                             <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Inventory</a>
                         <?php  } else { ?>
                             <a href="inventory" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Inventory</a>
@@ -221,7 +238,7 @@ function isNavClosed($conn, $navId)
                         <span>Maintenance</span>
                     </a>
 
-                    <?php if (isNavClosed($conn, 4)) { ?>
+                    <?php if (isNavClosed($conn, 4, $On_Session[0]['role'])) { ?>
                         <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                             <span class="material-icons">bar_chart</span>
                             <span>Report Generation</span>
@@ -237,7 +254,7 @@ function isNavClosed($conn, $navId)
                 <?php } ?>
 
 
-                <?php if (isNavClosed($conn, 5)) { ?>
+                <?php if (isNavClosed($conn, 5, $On_Session[0]['role'])) { ?>
                     <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                         <span class="material-icons">settings</span>
                         <span>Account Settings</span>
