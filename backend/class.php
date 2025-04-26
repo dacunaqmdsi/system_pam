@@ -128,7 +128,7 @@ class global_class extends db_connect
 
 
         // Check if the email already exists
-        $stmt = $this->conn->prepare("SELECT `id`, `fullname`, `email` FROM `users` WHERE `email` = ? and `status`='1'");
+        $stmt = $this->conn->prepare("SELECT `id`, `fullname`, `email_official` FROM `users` WHERE `email_official` = ? and `status`='1'");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();

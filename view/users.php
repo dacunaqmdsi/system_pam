@@ -198,6 +198,12 @@ if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads")
                 </div>
 
                 <div class="mb-4">
+                    <label for="add_user_email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="text" id="email_official" name="email_official" class="w-full p-2 border rounded-md" required>
+                </div>
+
+
+                <div class="mb-4">
                     <label for="add_user_type" class="block text-sm font-medium text-gray-700">User Type</label>
                     <select name="user_type" id="add_user_type" class="w-full p-2 border rounded-md" required>
                         <option value="Administrator">Administrator</option>

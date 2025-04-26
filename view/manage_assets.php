@@ -187,23 +187,17 @@
             </div> -->
             <div class="mb-4">
                 <label for="add_assets_description" class="block text-sm font-medium text-gray-700">Type</label>
-                <select class="w-full p-2 border rounded-md" id="add_assets_description" name="assets_description" required>
+                <select class="w-full p-2 border rounded-md" id="add_assets_description" name="assets_description" onchange="filterCategories()" required>
                     <option value="">Select Type</option>
                     <option value="Assets">Assets</option>
                     <option value="Office Supplies">Office Supplies</option>
                 </select>
             </div>
 
-
-
             <div hidden class="mb-4">
                 <label for="add_assets_price" class="block text-sm font-medium text-gray-700">Price</label>
                 <input type="text" id="add_assets_price" name="assets_price" class="w-full p-2 border rounded-md">
             </div>
-
-
-
-
             <div class="mb-4">
                 <label for="add_assets_Office" class="block text-sm font-medium text-gray-700">Office</label>
                 <select name="assets_Office" id="add_assets_Office" class="w-full p-2 border rounded-md" required>
@@ -224,11 +218,6 @@
                     <?php endif; ?>
                 </select>
             </div>
-
-
-
-
-
             <div class="mb-4">
                 <label for="add_assets_category" class="block text-sm font-medium text-gray-700">Category</label>
                 <select name="assets_category" id="add_assets_category" class="w-full p-2 border rounded-md" required>
@@ -238,16 +227,15 @@
                     if ($fetch_all_category->num_rows > 0):
                         while ($category = $fetch_all_category->fetch_assoc()):
                     ?>
-
-                            <option value="<?= $category['id'] ?>"><?= $category['category_name'] ?></option>
-
+                            <option value="<?= $category['id'] ?>" data-type="<?= $category['type'] ?>">
+                                <?= $category['category_name'] ?>
+                            </option>
                         <?php endwhile; ?>
                     <?php else: ?>
-                        <tr>
-                            <td colspan="9" class="p-2 text-center">No record found.</td>
-                        </tr>
+                        <option disabled>No record found.</option>
                     <?php endif; ?>
                 </select>
+
             </div>
 
             <script>
@@ -669,6 +657,23 @@
 
 
 
+<script>
+    function filterCategories() {
+        var selectedType = document.getElementById('add_assets_description').value;
+
+        $("#add_assets_category option").each(function() {
+            var categoryType = $(this).data("type");
+
+            if (!categoryType || categoryType == selectedType) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+
+        $("#add_assets_category").val(""); // Reset category select
+    }
+</script>
 
 
 <script>

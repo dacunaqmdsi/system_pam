@@ -59,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user_nickname = htmlspecialchars(trim($_POST['user_nickname']));
         // $user_email = filter_var(trim($_POST['user_email']), FILTER_SANITIZE_EMAIL);
         $user_email = htmlspecialchars(trim($_POST['user_email']));
+        $email_official = htmlspecialchars(trim($_POST['email_official']));
 
         $user_password = trim($_POST['user_password']);
         // $hashed_password = password_hash($user_password, PASSWORD_DEFAULT);
@@ -72,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //     exit;
         // }
 
-        $result = $db->Adduser($userId, $user_imageName, $user_fullname, $user_nickname, $user_email, $user_type, $user_password, $user_designation);
+        $result = $db->Adduser($userId, $user_imageName, $user_fullname, $user_nickname, $user_email, $user_type, $user_password, $user_designation, $email_official);
 
         if ($result == "success") {
             echo json_encode(["status" => 200, "message" => "User successfully registered"]);

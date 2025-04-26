@@ -1054,15 +1054,15 @@ class global_class extends db_connect
     }
 
 
-    public function Adduser($userId, $user_imageName, $user_fullname, $user_nickname, $user_email, $user_type, $user_password, $user_designation)
+    public function Adduser($userId, $user_imageName, $user_fullname, $user_nickname, $user_email, $user_type, $user_password, $user_designation, $email_official)
     {
 
         $hashed_password = $user_password;
         // Insert Data into Database
-        $sql = "INSERT INTO users (user_id, email, password, fullname, nickname, role, designation, profile_picture) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO users (user_id, email, password, fullname, nickname, role, designation, profile_picture, email_official) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssssssss", $userId, $user_email, $hashed_password, $user_fullname, $user_nickname, $user_type, $user_designation, $user_imageName);
+        $stmt->bind_param("sssssssss", $userId, $user_email, $hashed_password, $user_fullname, $user_nickname, $user_type, $user_designation, $user_imageName, $email_official);
         if ($stmt->execute()) {
             $stmt->close();
             return 'success';
