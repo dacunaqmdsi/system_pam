@@ -22,11 +22,13 @@ if (isset($_SESSION['id'])) {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/alertify.min.js"></script>
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-red-900 to-red-700 flex items-center justify-center px-4 py-10">
+<!-- <body class="min-h-screen bg-gradient-to-br from-red-900 to-red-700 flex items-center justify-center px-4 py-10"> -->
 
+<body class="min-h-screen bg-cover bg-center flex items-center justify-center px-4 py-10" style="background-image: url('background.jpeg');">
+<div class="bg-white bg-opacity-80 p-8 rounded shadow-lg">
   <?php include "function/PageSpinner.php"; ?>
 
-  <div class="bg-white rounded-xl shadow-lg w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 overflow-hidden">
+  <div class="bg-white bg-opacity-90 rounded-xl shadow-lg w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 overflow-hidden backdrop-blur-sm">
 
     <!-- Left side: Description -->
     <div class="bg-red-800 text-white flex flex-col justify-center items-center p-8 md:p-12">
@@ -62,11 +64,11 @@ if (isset($_SESSION['id'])) {
           </div>
         </div>
         <script>
-function toggleIndexPassword() {
-  const input = document.getElementById('password');
-  input.type = input.type === 'password' ? 'text' : 'password';
-}
-</script>
+          function toggleIndexPassword() {
+            const input = document.getElementById('password');
+            input.type = input.type === 'password' ? 'text' : 'password';
+          }
+        </script>
 
 
         <div>
@@ -80,7 +82,7 @@ function toggleIndexPassword() {
       </form>
     </div>
   </div>
-
+        </div>
   <script src="assets/js/app.js"></script>
 </body>
 

@@ -39,6 +39,7 @@ if ($fetch_all_user->num_rows > 0):
                     <option value="Assigned" <?php if($user['status'] == "Assigned") echo "selected"; ?>>Assigned</option>
                     <option value="Under Maintenance" <?php if($user['status'] == "Under Maintenance") echo "selected"; ?>>Under Maintenance</option>
                     <option value="Disposed" <?php if($user['status'] == "Disposed") echo "selected"; ?>>Disposed</option>
+                    <option value="Fixed" <?php if($user['status'] == "Fixed") echo "selected"; ?>>Fixed</option>
                 </select>
         </div>
     </td>

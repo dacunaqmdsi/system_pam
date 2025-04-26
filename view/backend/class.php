@@ -442,14 +442,14 @@ class global_class extends db_connect
 
 
 
-    public function addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety)
+    public function addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety, $r_specification)
     {
         // Insert purchase item
         $query = $this->conn->prepare("
-            INSERT INTO `request_item` (`r_request_id`, `r_item_asset_id`, `r_item_qty`, `r_item_variety`, `r_item_price`) 
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO `request_item` (`r_request_id`, `r_item_asset_id`, `r_item_qty`, `r_item_variety`, `r_item_price`, `r_specification`) 
+            VALUES (?, ?, ?, ?, ?, ?)
         ");
-        $query->bind_param("iiisd", $request_id, $asset_id, $cart_qty, $cart_variety, $price);
+        $query->bind_param("iiisds", $request_id, $asset_id, $cart_qty, $cart_variety, $price, $r_specification);
 
         if (!$query->execute()) {
             return 'Error: ' . $query->error;
@@ -1327,7 +1327,8 @@ class global_class extends db_connect
                 a.name, 
                 a.price,
                 c.cart_qty,
-                c.cart_variety
+                c.cart_variety,
+                c.specification
             FROM request_cart c 
             JOIN assets a ON c.cart_asset_id = a.id
             WHERE c.cart_user_id = ?
@@ -1347,7 +1348,8 @@ class global_class extends db_connect
                 'name' => ucfirst($row['name']),
                 'price' => $row['price'],
                 'cart_qty' => $row['cart_qty'],
-                'cart_variety' => ucfirst($row['cart_variety'])
+                'cart_variety' => ucfirst($row['cart_variety']),
+                'specification' => $row['specification']
             ];
         }
 

@@ -94,6 +94,7 @@
                     <th class="p-3">Office</th>
                     <th class="p-3">Purchase Date</th>
                     <!-- <th class="p-3">Price</th> -->
+                    <th class="p-3">Specification</th>
                     <th class="p-3">Status</th>
 
 
@@ -394,18 +395,19 @@
 
 
 
-            <div hidden class="mb-4">
-                <label for="assets_variety_name" class="block text-sm font-medium text-gray-700">Variety Name</label>
+            <div class="mb-4">
+                <label for="assets_variety_name" class="block text-sm font-medium text-gray-700">Specification</label>
                 <input type="text" id="assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md">
             </div>
 
-            <div hidden class="mb-4">
-                <label for="assets_variety_value" class="block text-sm font-medium text-gray-700">Variety Value</label>
+            <div class="mb-4">
+                <label for="assets_variety_value" class="block text-sm font-medium text-gray-700">More Specification</label>
                 <div id="variety-values-container">
                     <input type="text" name="assets_variety_value[]" class="w-full p-2 mb-2 border rounded-md">
                 </div>
-                <button type="button" class="add-variety-value mt-2 text-blue-500">Add Another Variety Value</button>
+                <button type="button" class="add-variety-value mt-2 text-blue-500">Add Another Specification</button>
             </div>
+
 
 
 

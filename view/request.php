@@ -1,6 +1,4 @@
 <?php include "components/header.php"; ?>
-
-<!-- Top bar with user profile -->
 <div class="flex justify-between items-center bg-white p-4 mb-6 rounded-md shadow-md">
     <h2 class="text-lg font-semibold text-gray-700">Supply Request</h2>
     <div class="flex items-center space-x-3">
@@ -19,9 +17,6 @@
         </span>
     </div>
 </div>
-
-
-
 <div class="relative mb-4 w-full max-w-md">
     <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
         <i class="material-icons text-lg">search</i>
@@ -29,19 +24,10 @@
     <input type="text" id="searchInput" placeholder="Search users..."
         class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
 </div>
-
-
 <!-- User Table Card -->
 <div class="max-w-7xl mx-auto grid grid-cols-12 gap-4">
-
-
     <?php if ($_SESSION['role'] == "Head Library" || $_SESSION['role'] == "Head Basic Education" || $_SESSION['role'] == "Head IACEPO & NSTP") { ?>
-
-
-
     <?php } else { ?>
-
-        <!-- Menu Section -->
         <div class="col-span-8 bg-white p-4 rounded-xl shadow-md">
             <h2 class="text-xl font-bold mb-4">Item list</h2>
             <div class="flex space-x-2 mb-4">
@@ -107,16 +93,7 @@
         </div>
     <?php } ?>
     <!-- Cart Section -->
-
-
 </div>
-
-
-
-
-
-
-
 
 <!-- User Table Card -->
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
@@ -124,21 +101,13 @@
         <table id="userTable" class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
-
                     <th class="p-3">#</th>
                     <th class="p-3">Invoice</th>
                     <th class="p-3">Request By</th>
-
                     <th class="p-3">Designation</th>
                     <th class="p-3">Request Date</th>
                     <th class="p-3">Status</th>
-
-
                     <th class="p-3 text-center">Actions</th>
-
-
-
-
                 </tr>
             </thead>
             <tbody>
@@ -147,17 +116,6 @@
         </table>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 <!-- Modal -->
 <div id="cartModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center" style="display:none;">
     <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
@@ -189,18 +147,10 @@
                     <label for="asset_id" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Asset ID</label>
                 </div>
 
-
                 <div class="relative mb-4">
                     <input type="text" id="qty" name="qty" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
                     <label for="qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Quantity</label>
                 </div>
-
-
-
-
-
-
-
                 <div class="relative mb-4">
                     <input type="text" id="varietyName" hidden>
                     <select id="variety" name="variety" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
@@ -209,31 +159,25 @@
                         <option value="option2">Option 2</option>
                         <option value="option3">Option 3</option>
                     </select>
-                    <label for="variety" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Variety</label>
+                    <label for="variety" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Specification</label>
                 </div>
 
+
                 <div class="relative mb-4">
-                    <input type="text" id="specification" name="specification" placeholder="Specification" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                    <input type="text" id="specification" name="specification" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
+                    <label for="qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">More spefication details</label>
                 </div>
+
             </div>
             <button type="submit" id="BtnaddToCart" class="px-4 py-2 bg-green-500 text-white rounded">Add to cart</button>
             <button type="button" id="closeCartModal" class="px-4 py-2 bg-red-500 text-white rounded">Close</button>
         </form>
     </div>
 </div>
-
-
-
-
-
-
 <!-- MODAL REQUEST SECION -->
 <div id="sendRequestModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center" style="display:none;">
     <div class="bg-white rounded-lg p-6 shadow-lg w-96">
         <h2 class="text-xl font-bold text-gray-700 mb-4">Request Details</h2>
-
-
-
         <div class="relative mb-4">
             <input type="text" id="supplierName" name="supplierName" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
             <label for="supplierName" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Supplier Name</label>
@@ -243,10 +187,6 @@
             <input type="text" id="supplierCompany" name="supplierCompany" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
             <label for="supplierCompany" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Supplier Company</label>
         </div>
-
-
-
-
         <div class="relative mb-4">
             <select id="designation" name="designation" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
                 <option value="" disabled selected hidden>--Select--</option>
@@ -259,22 +199,14 @@
             </select>
             <label for="designation" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">Designation</label>
         </div>
-
         <div class="flex justify-end space-x-2">
             <button id="confirmRequest" class="bg-green-500 text-white p-2 rounded-md">Confirm</button>
             <button id="closeRequestModal" class="bg-gray-500 text-white p-2 rounded-md">Cancel</button>
         </div>
     </div>
 </div>
-
-
-
-
 <script>
     $(document).ready(function() {
-
-
-
         let globalCartItems = []; // Store cart items globally
 
         function fetch_cart() {
@@ -296,6 +228,8 @@
 
                         let cartItemsHtml = globalCartItems.map((item, index) => {
                             let price = parseFloat(item.price) || 0;
+                            let specification = item.specification;
+                            
                             let subtotal = price * (item.cart_qty || 0);
                             totalItems += item.cart_qty;
                             totalPrice += subtotal;
@@ -344,12 +278,8 @@
                 },
             });
         }
-
-
         setInterval(fetch_cart, 3000);
         fetch_cart();
-
-
         $("#confirmRequest").click(function() {
             let supplierName = $("#supplierName").val().trim();
             let supplierCompany = $("#supplierCompany").val().trim();
@@ -402,37 +332,13 @@
                 }
             });
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         $("#btnSendRequest").click(function(e) {
             e.preventDefault();
             $("#sendRequestModal").fadeIn();
         });
-
-
         $("#closeRequestModal").click(function() {
             $("#sendRequestModal").fadeOut();
         });
-
         $("#sendRequestModal").click(function(event) {
             if ($(event.target).is("#sendRequestModal")) {
                 $("#sendRequestModal").fadeOut();
@@ -479,23 +385,6 @@
                 $("#cartModal").fadeOut();
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // Trigger change event when asset is selected
         $("#add_cat_assets_id").change(function() {
             // Get selected option's data attributes
@@ -515,10 +404,8 @@
                 }
             });
         });
-
         // Prevent manual change to category and subcategory
         $("#add_category_item, #add_assets_subcategory").prop("disabled", true);
-
         // Trigger category change to filter subcategories dynamically
         $("#add_category_item").change(function() {
             var selectedCategoryId = $(this).val();
@@ -536,13 +423,6 @@
             $("#add_assets_subcategory").val("");
         });
     });
-
-
-
-
-
-
-
     $(document).ready(function() {
         function fetchSuggestions(query) {
             if (query.length >= 1) {
@@ -623,10 +503,5 @@
         });
     });
 </script>
-
-
 <?php include "components/footer.php"; ?>
-
-
-
 <script src="assets/js/filter_assets_category.js"></script>

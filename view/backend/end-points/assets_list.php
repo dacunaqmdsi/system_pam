@@ -48,6 +48,7 @@ if ($fetch_all_user->num_rows > 0):
             <td class="p-2"><?php echo htmlspecialchars($user['category_name']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['subcategory_name']); ?></td>
 
+
             <?php
             if ($user['condition_status'] == 'New') {
                 echo ' <td class="p-2" style="color:blue;">' . htmlspecialchars($user['condition_status']) . '</td>';
@@ -65,6 +66,23 @@ if ($fetch_all_user->num_rows > 0):
             <td class="p-2"><?php echo htmlspecialchars($user['office_name']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['purchase_date']); ?></td>
             <!-- <td class="p-2">₱<?php echo htmlspecialchars(number_format($user['price'], 2)); ?></td> -->
+            <td class="p-2">
+                <?php
+                $variety = json_decode($user['variety'], true); // decode JSON as array
+
+                if ($variety) {
+                    echo '<strong>Name:</strong> ' . htmlspecialchars($variety['name']) . '<br>';
+                    echo '<strong>Values:</strong><ul>';
+                    foreach ($variety['values'] as $value) {
+                        echo '<li>' . htmlspecialchars($value) . '</li>';
+                    }
+                    echo '</ul>';
+                } else {
+                    echo 'Invalid format';
+                }
+                ?>
+            </td>
+
             <td class="p-2"><?php echo htmlspecialchars($user['status']); ?></td>
 
             <?php if (isset($On_Session[0]['role']) && $On_Session[0]['role'] == "Administrator") { ?>

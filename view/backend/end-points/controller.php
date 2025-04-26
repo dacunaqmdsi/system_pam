@@ -493,9 +493,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $price = $item['price'];
                         $cart_qty = $item['cart_qty'];
                         $cart_variety = $item['cart_variety'];
+                        $r_specification = $item['specification'];
 
                         // Pass the valid purchase ID
-                        $db->addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety);
+                        $db->addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety,  $r_specification);
                     }
                 }
             } else {
