@@ -163,10 +163,25 @@
                 </div>
 
 
-                <div class="relative mb-4">
+                <div hidden class="relative mb-4">
                     <input type="text" id="specification" name="specification" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" ">
                     <label for="qty" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 left-2 z-10 bg-white px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">More spefication details</label>
                 </div>
+
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">Specification</label>
+                    <input type="text" id="specification_name" name="specification_name" class="w-full p-2 border rounded-md">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700">More Specification</label>
+                    <div id="specification-values-container">
+                        <input type="text" name="specification_name_value[]" class="w-full p-2 mb-2 border rounded-md">
+                    </div>
+                    <button type="button" class="add-specification-value mt-2 text-blue-500">Add Another Specification</button>
+                </div>
+
 
             </div>
             <button type="submit" id="BtnaddToCart" class="px-4 py-2 bg-green-500 text-white rounded">Add to cart</button>
@@ -229,7 +244,8 @@
                         let cartItemsHtml = globalCartItems.map((item, index) => {
                             let price = parseFloat(item.price) || 0;
                             let specification = item.specification;
-                            
+                            let specification_array = item.specification_array;
+
                             let subtotal = price * (item.cart_qty || 0);
                             totalItems += item.cart_qty;
                             totalPrice += subtotal;
@@ -500,6 +516,27 @@
             $("#userTable tbody tr").filter(function() {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
             });
+        });
+    });
+
+    $('.add-specification-value').on('click', function() {
+        // Create the new input field
+        const newInput = $('<input type="text" name="specification_name_value[]" class="w-full p-2 mb-2 border rounded-md" required>');
+
+        // Create the remove button
+        const removeButton = $('<button type="button" class="remove-btn p-1 bg-transparent text-red-500 text-lg font-bold border-none ml-2">X</button>');
+
+        // Append the new input field and the remove button inside a wrapper div
+        const inputWrapper = $('<div class="input-wrapper mb-2 flex items-center"></div>');
+        inputWrapper.append(newInput);
+        inputWrapper.append(removeButton);
+
+        // Append the input wrapper to the correct container
+        $('#specification-values-container').append(inputWrapper);
+
+        // Attach the click event for the remove button
+        removeButton.on('click', function() {
+            inputWrapper.remove(); // Remove the entire wrapper
         });
     });
 </script>

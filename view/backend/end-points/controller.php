@@ -453,7 +453,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $specification = $_POST['specification'];
 
 
-        $result = $db->AddCart($add_id, $asset_id, $qty, $variety, $specification);
+        // Build Specification JSON
+        $specification_name = htmlspecialchars(trim($_POST['specification_name'] ?? ''));
+        $specification_values = isset($_POST['specification_name_value']) ? $_POST['specification_name_value'] : [];
+
+        if (!empty($specification_name) && !empty($specification_values)) {
+            $specification_array = json_encode([
+                'name' => $specification_name,
+                'values' => $specification_values
+            ], JSON_UNESCAPED_UNICODE);
+        } else {
+            $specification_array = null; // or '' depending on your DB setup
+        }
+
+
+        $result = $db->AddCart($add_id, $asset_id, $qty, $variety, $specification, $specification_array);
 
         if ($result == "success") {
             echo json_encode(["status" => 200, "message" => "Successfully Added"]);
@@ -495,9 +509,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $cart_qty = $item['cart_qty'];
                         $cart_variety = $item['cart_variety'];
                         $r_specification = $item['specification'];
+                        $r_specification_array = $item['specification_array'];
 
                         // Pass the valid purchase ID
-                        $db->addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety,  $r_specification);
+                        $db->addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety,  $r_specification, $r_specification_array);
                     }
                 }
             } else {

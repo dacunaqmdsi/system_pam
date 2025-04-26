@@ -36,23 +36,56 @@ if (!$conn) {
 }
 
 
-function isNavClosed($conn, $navId, $userType)
+// function isNavClosed($conn, $navId, $userType)
+// {
+//     if ($userType == "Administrator") {
+//         return false;
+//     } else {
+//         $stmt = $conn->prepare("SELECT is_closed FROM maintenance_table WHERE id = ?");
+//         $stmt->bind_param("i", $navId); // assuming $navId is an integer
+//         $stmt->execute();
+//         $result = $stmt->get_result();
+
+//         if ($row = $result->fetch_assoc()) {
+//             return (int)$row['is_closed'] === 1; // returns true if closed
+//         }
+
+//         return false; // explicitly return false if not found
+//     }
+// }
+
+function isNavClosed($conn, $navId, $userType, $userId)
 {
-    if ($userType == "Administrator") {
+    // Allow Administrator and Head Maintenance full access
+    if ($userType == "Administrator" || $userType == "Head Maintenance") {
         return false;
-    } else {
-        $stmt = $conn->prepare("SELECT is_closed FROM maintenance_table WHERE id = ?");
-        $stmt->bind_param("i", $navId); // assuming $navId is an integer
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        if ($row = $result->fetch_assoc()) {
-            return (int)$row['is_closed'] === 1; // returns true if closed
-        }
-
-        return false; // explicitly return false if not found
     }
+
+    // First, check general navigation lock from maintenance_table
+    $stmt = $conn->prepare("SELECT is_closed FROM maintenance_table WHERE id = ?");
+    $stmt->bind_param("i", $navId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($row = $result->fetch_assoc()) {
+        if ((int)$row['is_closed'] === 1) {
+            return true; // Globally closed
+        }
+    }
+
+    // If not globally closed, check per user in maintenance_table_user
+    $stmt = $conn->prepare("SELECT is_closed FROM maintenance_table_user WHERE user_id = ? AND name = (SELECT name FROM maintenance_table WHERE id = ? LIMIT 1) LIMIT 1");
+    $stmt->bind_param("ii", $userId, $navId);
+    $stmt->execute();
+    $userResult = $stmt->get_result();
+
+    if ($userRow = $userResult->fetch_assoc()) {
+        return (int)$userRow['is_closed'] === 1; // true if user's navigation is closed
+    }
+
+    return false; // Default to open if no user record found
 }
+
 
 
 ?>
@@ -66,7 +99,7 @@ function isNavClosed($conn, $navId, $userType)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $maintenance['system_name'] ?></title>
+    <title>Procurement & Assets Management System</title>
     <link rel="icon" type="image/png" href="../assets/logo/<?= $maintenance['system_image'] ?>">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -126,10 +159,19 @@ function isNavClosed($conn, $navId, $userType)
                         <span>User Management</span>
                     </a>
 
-                    <a href="request" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
-                        <span class="material-icons">manage_accounts</span>
-                        <span>Requisition</span>
-                    </a>
+                    <?php if (isNavClosed($conn, 10, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
+                        <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">manage_accounts</span>
+                            <span>Requisition</span>
+                        </a>
+                    <?php  } else { ?>
+                        <a href="request" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">manage_accounts</span>
+                            <span>Requisition</span>
+                        </a>
+                    <?php } ?>
+
+
 
                 <?php } ?>
 
@@ -139,7 +181,7 @@ function isNavClosed($conn, $navId, $userType)
 
                 <?php } else { ?>
 
-                    <?php if (isNavClosed($conn, 1, $On_Session[0]['role'])) { ?>
+                    <?php if (isNavClosed($conn, 1, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
                         <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                             <span class="material-icons">shopping_cart</span>
                             <span>Procurements</span>
@@ -152,6 +194,7 @@ function isNavClosed($conn, $navId, $userType)
                     <?php  } else { ?>
 
                         <?php if ($_SESSION['role'] == "Head Maintenance") { ?>
+
                             <a href="request" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                                 <span class="material-icons">manage_accounts</span>
                                 <span>Requisition</span>
@@ -198,7 +241,7 @@ function isNavClosed($conn, $navId, $userType)
                 <?php } ?>
 
 
-                <?php if (isNavClosed($conn, 2, $On_Session[0]['role'])) { ?>
+                <?php if (isNavClosed($conn, 2, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
                     <?php if ($_SESSION['role'] == "Head Finance" || $_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
                         <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                             <span class="material-icons">receipt_long</span>
@@ -214,13 +257,22 @@ function isNavClosed($conn, $navId, $userType)
                     <?php } ?>
                 <?php } ?>
 
-
-                <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") { ?>
-                    <a href="request" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
-                        <span class="material-icons">manage_accounts</span>
-                        <span>Requisition</span>
-                    </a>
+                <?php if (isNavClosed($conn, 10, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
+                    <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") { ?>
+                        <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">manage_accounts</span>
+                            <span>Requisition</span>
+                        </a>
+                    <?php } ?>
+                <?php  } else { ?>
+                    <?php if ($_SESSION['role'] == "Finance" || $_SESSION['role'] == "Library" || $_SESSION['role'] == "Basic Education" || $_SESSION['role'] == "IACEPO & NSTP") { ?>
+                        <a href="request" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
+                            <span class="material-icons">manage_accounts</span>
+                            <span>Requisition</span>
+                        </a>
+                    <?php } ?>
                 <?php } ?>
+
 
                 <?php if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
 
@@ -234,20 +286,20 @@ function isNavClosed($conn, $navId, $userType)
                         <span class="material-icons">expand_more</span>
                     </button>
                     <div id="assetsDropdown" class="ml-8 space-y-2 hidden">
-                        <?php if (isNavClosed($conn, 9, $On_Session[0]['role'])) { ?>
+                        <?php if (isNavClosed($conn, 9, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
                             <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Receive Logs</a>
                         <?php  } else { ?>
                             <a href="receive_logs" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Receive Logs</a>
                         <?php } ?>
 
 
-                        <?php if (isNavClosed($conn, 6, $On_Session[0]['role'])) { ?>
+                        <?php if (isNavClosed($conn, 6, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
                             <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Assets</a>
                         <?php  } else { ?>
                             <a href="manage_assets.php?id=10" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Assets</a>
                         <?php } ?>
 
-                        <?php if (isNavClosed($conn, 8, $On_Session[0]['role'])) { ?>
+                        <?php if (isNavClosed($conn, 8, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
                             <a href="close" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Inventory</a>
                         <?php  } else { ?>
                             <a href="inventory" class="block text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">➤ Inventory</a>
@@ -270,7 +322,7 @@ function isNavClosed($conn, $navId, $userType)
                         <span>Maintenance</span>
                     </a>
 
-                    <?php if (isNavClosed($conn, 4, $On_Session[0]['role'])) { ?>
+                    <?php if (isNavClosed($conn, 4, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
                         <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                             <span class="material-icons">bar_chart</span>
                             <span>Report Generation</span>
@@ -286,7 +338,7 @@ function isNavClosed($conn, $navId, $userType)
                 <?php } ?>
 
 
-                <?php if (isNavClosed($conn, 5, $On_Session[0]['role'])) { ?>
+                <?php if (isNavClosed($conn, 5, $On_Session[0]['role'], $On_Session[0]['id'])) { ?>
                     <a href="close" class="flex items-center lg:justify-start space-x-3 text-gray-200 hover:text-yellow-300 hover:bg-gray-800 px-4 py-2 rounded-md transition-all duration-300">
                         <span class="material-icons">settings</span>
                         <span>Account Settings</span>

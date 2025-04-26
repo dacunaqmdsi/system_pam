@@ -377,23 +377,23 @@ class global_class extends db_connect
 
 
 
-    public function AddCart($add_id, $asset_id, $qty, $variety, $specification)
+    public function AddCart($add_id, $asset_id, $qty, $variety, $specification, $specification_array)
     {
         // Check if the asset already exists in the cart
-        $checkQuery = $this->conn->prepare("SELECT cart_qty FROM request_cart WHERE cart_user_id = ? AND cart_asset_id = ? AND cart_variety = ? AND specification = ?");
-        $checkQuery->bind_param("iiss", $add_id, $asset_id, $variety, $specification);
+        $checkQuery = $this->conn->prepare("SELECT cart_qty FROM request_cart WHERE cart_user_id = ? AND cart_asset_id = ? AND cart_variety = ? AND specification = ? AND specification_array = ? ");
+        $checkQuery->bind_param("iisss", $add_id, $asset_id, $variety, $specification, $specification_array);
         $checkQuery->execute();
         $result = $checkQuery->get_result();
 
         if ($result->num_rows > 0) {
             // Item exists, update the quantity
-            $updateQuery = $this->conn->prepare("UPDATE request_cart SET cart_qty = cart_qty + $qty WHERE cart_user_id = ? AND cart_asset_id = ? AND cart_variety = ? AND specification = ?");
-            $updateQuery->bind_param("iiss", $add_id, $asset_id, $variety, $specification);
+            $updateQuery = $this->conn->prepare("UPDATE request_cart SET cart_qty = cart_qty + $qty WHERE cart_user_id = ? AND cart_asset_id = ? AND cart_variety = ? AND specification = ? AND specification_array = ?");
+            $updateQuery->bind_param("iiss", $add_id, $asset_id, $variety, $specification, $specification_array);
             return $updateQuery->execute();
         } else {
             // Item does not exist, insert a new row
-            $insertQuery = $this->conn->prepare("INSERT INTO request_cart (cart_user_id, cart_asset_id, cart_qty, cart_variety, specification) VALUES (?, ?, ?,?, ?)");
-            $insertQuery->bind_param("iiiss", $add_id, $asset_id, $qty, $variety, $specification);
+            $insertQuery = $this->conn->prepare("INSERT INTO request_cart (cart_user_id, cart_asset_id, cart_qty, cart_variety, specification, specification_array) VALUES (?, ?, ?,?, ?, ?)");
+            $insertQuery->bind_param("iiisss", $add_id, $asset_id, $qty, $variety, $specification , $specification_array);
             return $insertQuery->execute();
         }
     }
@@ -442,14 +442,14 @@ class global_class extends db_connect
 
 
 
-    public function addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety, $r_specification)
+    public function addpurchase_item($request_id, $add_id, $cart_id, $asset_id, $price, $cart_qty, $cart_variety, $r_specification, $r_specification_array)
     {
         // Insert purchase item
         $query = $this->conn->prepare("
-            INSERT INTO `request_item` (`r_request_id`, `r_item_asset_id`, `r_item_qty`, `r_item_variety`, `r_item_price`, `r_specification`) 
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO `request_item` (`r_request_id`, `r_item_asset_id`, `r_item_qty`, `r_item_variety`, `r_item_price`, `r_specification`, `r_specification_array`) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
-        $query->bind_param("iiisds", $request_id, $asset_id, $cart_qty, $cart_variety, $price, $r_specification);
+        $query->bind_param("iiisdss", $request_id, $asset_id, $cart_qty, $cart_variety, $price, $r_specification, $r_specification_array);
 
         if (!$query->execute()) {
             return 'Error: ' . $query->error;
@@ -913,7 +913,8 @@ class global_class extends db_connect
                 request_item.r_item_price,
                 request_item.r_item_variety,
                 request.request_status,
-                assets.name
+                assets.name,
+                request_item.r_specification_array
             FROM `request_item`
             LEFT JOIN assets ON assets.id = request_item.r_item_asset_id
             LEFT JOIN request ON request.request_id = request_item.r_request_id
@@ -1328,7 +1329,8 @@ class global_class extends db_connect
                 a.price,
                 c.cart_qty,
                 c.cart_variety,
-                c.specification
+                c.specification,
+                c.specification_array
             FROM request_cart c 
             JOIN assets a ON c.cart_asset_id = a.id
             WHERE c.cart_user_id = ?
@@ -1349,7 +1351,8 @@ class global_class extends db_connect
                 'price' => $row['price'],
                 'cart_qty' => $row['cart_qty'],
                 'cart_variety' => ucfirst($row['cart_variety']),
-                'specification' => $row['specification']
+                'specification' => $row['specification'],
+                'specification_array' => $row['specification_array']
             ];
         }
 

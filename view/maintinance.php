@@ -180,6 +180,25 @@ $result = mysqli_query($conn, $query);
         </form>
     </div>
 
+    <?
+    $conn = mysqli_connect("localhost", "root", "", "pam");
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    ?>
+    <div>
+        <label>Lock Module per Account: </label>
+        <select onchange="change_view(this.value);" class="form-control" id="accountid">
+            <option value="0">Select Account</option>
+            <?php
+            $rs = mysqli_query($conn, 'SELECT id, fullname from users ');
+            while ($rw = mysqli_fetch_array($rs)) {
+                echo '<option value="' . $rw['id'] . '">' . $rw['fullname'] . '</option>';
+            }
+            ?>
+        </select>
+    </div>
+    <div id="tmp"></div>
 
     <!-- Modal for Adding Promo -->
     <div id="addAssetsModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center" style="display:none;">
@@ -445,6 +464,25 @@ $result = mysqli_query($conn, $query);
 
 <!-- Search Function -->
 <script>
+    function change_view(id) {
+        ajax_fn('maintinance_show.php?id=' + id, 'tmp');
+    }
+
+    function ajax_fn(url, elementId) {
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById(elementId).innerHTML = "";
+                document.getElementById(elementId).innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+    }
     $(document).ready(function() {
         $("#searchInput").on("keyup", function() {
             const value = $(this).val().toLowerCase();

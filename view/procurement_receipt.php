@@ -68,7 +68,26 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
             ?>
                     <tr class="border">
                         <td class="border p-2 text-center"><?= $item['name'] ?></td>
-                        <td class="border p-2 text-center"><?= $item['r_item_variety'] ?? 'N/A' ?></td>
+                        <!-- <td class="border p-2 text-center"><?= $item['r_item_variety'] ?? 'N/A' ?> <small>(<?= $item['sss'] ?>)</small></td> -->
+
+                        <td class="border p-2 text-center">
+                            <?= htmlspecialchars($item['r_item_variety'] ?? '') ?>
+                            <?php
+                            $specification = json_decode($item['r_specification_array'] ?? '', true); // decode JSON as array
+
+                            if ($specification) {
+                                echo '<strong>Name:</strong> ' . htmlspecialchars($specification['name']) . '<br>';
+                                echo '<strong>Details:</strong><ul class="list-disc list-inside text-left">';
+                                foreach ($specification['values'] as $value) {
+                                    echo '<li>' . htmlspecialchars($value) . '</li>';
+                                }
+                                echo '</ul>';
+                            } else {
+                                echo ''; // Or you can echo 'Invalid format' if needed
+                            }
+                            ?>
+                        </td>
+
                         <td class="border p-2 text-center"><?= $item['r_item_qty'] ?></td>
                         <!-- <td class="border p-2 text-center">₱<?= number_format($item['r_item_price'], 2) ?></td>
                         <td class="border p-2 text-center">₱<?= number_format($total_price, 2) ?></td> -->
@@ -94,8 +113,8 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
         </tbody>
     </table>
 
-      <!-- Footer Signatures -->
-      <div class="mt-12 grid grid-cols-3 gap-4 text-center text-sm">
+    <!-- Footer Signatures -->
+    <div class="mt-12 grid grid-cols-3 gap-4 text-center text-sm">
         <div>
             <p class="border-t border-gray-600 pt-2">Prepared by</p>
         </div>
