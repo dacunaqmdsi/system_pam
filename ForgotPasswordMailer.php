@@ -108,4 +108,3 @@ class Mailer extends db_connect
 // Create a Mailer object and send the email with the new password
 $mailer = new Mailer();
 $mailer->sendNewPassword($Email, $Fullname, $newpassword);
-?>

@@ -14,7 +14,7 @@ if (isset($_SESSION['id'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PAM</title>
+  <title>Procurement & Assets Management System</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" type="image/png" href="assets/logo/<?= $maintenance['system_image'] ?>">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/AlertifyJS/1.13.1/css/alertify.css" />
