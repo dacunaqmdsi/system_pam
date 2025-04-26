@@ -119,7 +119,7 @@
 
 
 <!-- User Table Card -->
-<!-- <div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
+<div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
     <div class="overflow-x-auto">
         <table id="userTable" class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="bg-gray-100 text-gray-700">
@@ -142,11 +142,11 @@
                 </tr>
             </thead>
             <tbody>
-                <?php //include "backend/end-points/request_list.php"; ?>
+                <?php include "backend/end-points/request_list.php"; ?>
             </tbody>
         </table>
     </div>
-</div> -->
+</div>
 
 
 
@@ -365,6 +365,11 @@
                 return;
             }
 
+            // 🔒 Native confirmation prompt
+            let confirmRequest = confirm("Are you sure you want to request these items?");
+            if (!confirmRequest) {
+                return; // User cancelled
+            }
             // Create data object instead of FormData
             let requestData = {
                 supplier_name: "",

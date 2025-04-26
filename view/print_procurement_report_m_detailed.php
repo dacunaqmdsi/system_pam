@@ -1,10 +1,13 @@
 <?php
+error_reporting(0);
 include "components/header.php";
 
 $month = isset($_GET['month']) ? intval($_GET['month']) : null; // e.g. 4 for April
 $year = isset($_GET['year']) ? intval($_GET['year']) : null;    // e.g. 2025
+$department = isset($_GET['department']) ? $_GET['department'] : null;    // Department name or identifier
 
-$fetch_all_user = $db->fetch_all_request_report_detailed($month, $year);
+
+$fetch_all_user = $db->fetch_all_request_report_detailed($month, $year, $department);
 $maintenance = $db->fetch_maintenance();
 
 
@@ -49,19 +52,31 @@ $today = date('M. d, Y');
         <tbody>
             <?php if ($fetch_all_user->num_rows > 0):
                 while ($user = $fetch_all_user->fetch_assoc()):
-                    $total_price = $user['assets_price'] * $user['request_qty'];
+                    $total_price = $user['finance_'] * $user['request_qty'];
                     $request_date = date('M. d, Y', strtotime($user['request_date']));
+
+                    $get_ +=  $total_price;
             ?>
                     <tr class="border">
                         <td class="border border-gray-300 p-2 text-center"><?= $request_date ?></td>
                         <td class="border border-gray-300 p-2 text-center"><?= htmlspecialchars($user['assets_name']) ?> <i>(<?= htmlspecialchars($user['request_variety']) ?>)</i></td>
                         <td class="border border-gray-300 p-2 text-center"><?= $user['request_qty'] ?></td>
                         <td class="border border-gray-300 p-2 text-center"><?= htmlspecialchars($user['user_fullname']) ?></td>
-                        <td class="border border-gray-300 p-2 text-center">₱<?= number_format($user['assets_price'], 2) ?></td>
+                        <td class="border border-gray-300 p-2 text-center">₱<?= number_format($user['finance_'], 2) ?></td>
                         <td class="border border-gray-300 p-2 text-center">₱<?= number_format($total_price, 2) ?></td>
                         <td class="border border-gray-300 p-2 text-center"><?= htmlspecialchars($user['request_status']) ?></td>
                     </tr>
                 <?php endwhile; ?>
+
+                <tr class="border">
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                    <td class="border border-gray-300 p-2 text-center">Total: <b><?= number_format($get_, 2) ?></b></td>
+                    <td class="border border-gray-300 p-2 text-center"></td>
+                </tr>
             <?php else: ?>
                 <tr>
                     <td colspan="7" class="text-center text-gray-500 py-4">No records found.</td>

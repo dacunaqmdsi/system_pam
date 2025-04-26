@@ -11,7 +11,20 @@ date_default_timezone_set('Asia/Manila');
 $today = date('M. d, Y');
 ?>
 
+<script>
+    document.getElementById('dropDownsearchInput').addEventListener('change', function() {
+        const selectedDepartment = this.value; // Get the selected value from the dropdown
+        const printLinks = document.querySelectorAll('#printLink'); // Select all print links
 
+        printLinks.forEach(function(link) {
+            const requestMonth = link.closest('tr').querySelector('td').textContent.split(',')[0]; // Get the request month from the first column
+            const requestYear = link.closest('tr').querySelector('td').textContent.split(' ')[1]; // Get the request year from the first column
+
+            // Dynamically set the href attribute for each print link based on the selected department
+            link.href = `print_procurement_report_m_detailed?month=${requestMonth}&year=${requestYear}&department=${selectedDepartment}`;
+        });
+    });
+</script>
 <div id="printArea">
     <!-- Header -->
     <div class="text-center mb-6">
@@ -30,7 +43,16 @@ $today = date('M. d, Y');
         <p><strong>Office Designation:</strong> <?= $On_Session[0]['designation'] ?></p>
     </div>
 
-    <!-- Table -->
+
+    <div align="right">
+        <select id="department" class="pl-4 pr-4 py-2  border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
+            <option value="">ALL Departments</option>
+            <option value="Finance">Finance</option>
+            <option value="Library">Library</option>
+            <option value="Basic Education">Basic Education</option>
+        </select>
+    </div>
+
     <table class="w-full text-sm border border-gray-500 border-collapse">
         <thead class="bg-gray-200">
             <tr>
@@ -49,7 +71,7 @@ $today = date('M. d, Y');
                     <tr class="border">
                         <td class="border border-gray-300 p-2 text-center"><?= $request_date ?></td>
                         <td class="border border-gray-300 p-2 text-center">
-                            <a style="color:blue;" href="print_procurement_report_m_detailed.php?month=<?= $request_month ?>&year=<?= $request_year ?>">Print</a>
+                            <a style="color:blue;" href="javascript:void(0);" class="print-link" data-month="<?= $request_month ?>" data-year="<?= $request_year ?>">Print</a>
                         </td>
                     </tr>
                 <?php
@@ -60,9 +82,32 @@ $today = date('M. d, Y');
                     <td colspan="7" class="text-center text-gray-500 py-4">No records found.</td>
                 </tr>
             <?php endif; ?>
-
         </tbody>
     </table>
+
+    <script>
+        // Listen for changes on the department dropdown
+        document.getElementById('department').addEventListener('change', function() {
+            updatePrintLinks();
+        });
+
+        // Function to update the print links with the selected department
+        function updatePrintLinks() {
+            var department = document.getElementById('department').value;
+
+            var printLinks = document.querySelectorAll('.print-link');
+            printLinks.forEach(function(link) {
+                var month = link.getAttribute('data-month');
+                var year = link.getAttribute('data-year');
+
+                // Update the href attribute with the department and other parameters
+                link.setAttribute('href', 'print_procurement_report_m_detailed?month=' + month + '&year=' + year + '&department=' + department);
+            });
+        }
+
+        // Call the function initially to set up the links
+        updatePrintLinks();
+    </script>
 
     <!-- Footer Signatures -->
     <div class="mt-12 grid grid-cols-3 gap-4 text-center text-sm">

@@ -4,7 +4,7 @@
 if ($On_Session[0]['role'] == "Administrator") {
     $fetch_all_user = $db->fetch_all_request_for_admin();
 } else if ($On_Session[0]['role'] == "Head Finance") {
-    $fetch_all_user = $db->fetch_all_request_for_finance();
+    $fetch_all_user = $db->fetch_all_request_for_head($On_Session[0]['role']);
 } else if ($On_Session[0]['role'] == "Head Library") {
     $fetch_all_user = $db->fetch_all_request_for_head($On_Session[0]['role']);
 } else if ($On_Session[0]['role'] == "Head IACEPO & NSTP") {
@@ -24,10 +24,8 @@ if ($fetch_all_user->num_rows > 0):
     while ($user = $fetch_all_user->fetch_assoc()): ?>
         <tr>
             <td class="p-2"><?php echo $count++; ?></td>
-
             <td class="p-2"><?php echo htmlspecialchars($user['request_invoice']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['user_fullname'])); ?></td>
-            <!-- <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['request_supplier_name'])); ?></td> -->
             <td class="p-2"><?php echo htmlspecialchars($user['request_designation']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['request_date']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['request_status']); ?></td>

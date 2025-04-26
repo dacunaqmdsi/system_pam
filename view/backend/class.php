@@ -409,7 +409,7 @@ class global_class extends db_connect
 
     // }
 
-    public function confirmRequest($add_id, $supplier_name, $supplier_company, $designation)
+    public function confirmRequest($add_id, $supplier_name, $supplier_company, $designation, $role)
     {
         // Generate a unique invoice number
         do {
@@ -424,10 +424,10 @@ class global_class extends db_connect
 
         // Prepare the insert query
         $query = $this->conn->prepare(
-            "INSERT INTO `request` (`request_invoice`,`request_user_id`, `request_supplier_name`,`request_supplier_company`, `request_designation`) 
-            VALUES ( ?, ?,?, ?, ?)"
+            "INSERT INTO `request` (`request_invoice`,`request_user_id`, `request_supplier_name`,`request_supplier_company`, `request_designation`, `request_role`) 
+            VALUES ( ?, ?,?, ?, ?, ?)"
         );
-        $query->bind_param("sisss", $request_invoice, $add_id, $supplier_name, $supplier_company, $designation);
+        $query->bind_param("sissss", $request_invoice, $add_id, $supplier_name, $supplier_company, $designation, $role);
 
         if ($query->execute()) {
             return [
@@ -605,8 +605,16 @@ class global_class extends db_connect
     public function fetch_all_request_for_head($role)
     {
         $str = "";
-        if ($role == "Head Library") {
-            $str = " AND (users.role='Head Library' OR users.role='Library')";
+        switch ($role) {
+            case "Head Library":
+                $str = " AND ( request.request_role='Head Library' OR  request.request_role='Library')";
+                break;
+            case "Head IACEPO & NSTP":
+                $str = " AND ( request.request_role='Head IACEPO & NSTP' OR  request.request_role='IACEPO & NSTP')";
+                break;
+            case "Head Basic Education":
+                $str = " AND ( request.request_role='Head Basic Education' OR  request.request_role='Basic Education')";
+                break;
         }
 
         $query = $this->conn->prepare("
@@ -615,6 +623,7 @@ class global_class extends db_connect
                 request.request_invoice,
                 request.request_designation,
                 request.request_date,
+                request.request_role,
                 request.request_user_id,
                 request.request_status,
                 request.request_supplier_name,
@@ -624,7 +633,7 @@ class global_class extends db_connect
                 users.fullname AS user_fullname,
                 users.email AS user_email,
                 users.user_id,
-                users.designation as user_designation,
+                users.designation AS user_designation,
                 users.role
             FROM `request`
             LEFT JOIN users ON users.id = request.request_user_id
@@ -637,9 +646,8 @@ class global_class extends db_connect
             return $query->get_result();
         }
 
-        return false; // optional: handle query failure
+        return false;
     }
-
 
 
 
@@ -671,7 +679,8 @@ class global_class extends db_connect
 
                  -- Request item Fields
                 request_item.r_item_qty AS request_qty,
-                request_item.r_item_variety AS request_variety
+                request_item.r_item_variety AS request_variety,
+                request_item.r_finance_price AS finance_
                 
             FROM `request`
             LEFT JOIN users ON users.id = request.request_user_id
@@ -686,7 +695,7 @@ class global_class extends db_connect
         }
     }
 
-    public function fetch_all_request_report_detailed($month = null, $year = null)
+    public function fetch_all_request_report_detailed($month = null, $year = null, $requestRole = null)
     {
         $baseSQL = "
             SELECT 
@@ -698,6 +707,7 @@ class global_class extends db_connect
                 request.request_status,
                 request.request_supplier_name,
                 request.request_supplier_company,
+                request.request_role,
                 
                 -- User Fields
                 users.id AS user_id,
@@ -713,7 +723,8 @@ class global_class extends db_connect
     
                 -- Request item Fields
                 request_item.r_item_qty AS request_qty,
-                request_item.r_item_variety AS request_variety
+                request_item.r_item_variety AS request_variety,
+                request_item.r_finance_price AS finance_
     
             FROM `request`
             LEFT JOIN users ON users.id = request.request_user_id
@@ -735,6 +746,13 @@ class global_class extends db_connect
             $conditions[] = "YEAR(request.request_date) = ?";
             $params[] = $year;
             $types .= "i";
+        }
+
+        // Add condition for request_role if provided
+        if ($requestRole !== null) {
+            $conditions[] = "request.request_role = ?";
+            $params[] = $requestRole;
+            $types .= "s"; // Assuming request_role is a string
         }
 
         if (!empty($conditions)) {

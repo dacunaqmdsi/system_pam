@@ -465,11 +465,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $supplier_name = '';
         $supplier_company = '';
         $designation = '';
+        $role = $_SESSION['role'];
         // $cart_items = $_POST['cart_items'];
 
 
 
-        $request_result = $db->confirmRequest($add_id, $supplier_name, $supplier_company, $designation);
+        $request_result = $db->confirmRequest($add_id, $supplier_name, $supplier_company, $designation, $role);
 
         if (isset($request_result['id']) && isset($request_result['invoice'])) {
             $request_id = $request_result['id'];

@@ -75,7 +75,7 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
                         <td class="border p-2 text-center"><input type="number" value="<?= $item['r_finance_price'] ?>" placeholder="Price" class="bg-gray-200" id="r_finance_price<?= $item['r_item_id'] ?>" name="r_finance_price" />
 
 
-                            <?php if ($_SESSION['role'] == "Head Finance") { ?>
+                            <?php if ($_SESSION['role'] == "Head Finance" || $_SESSION['role'] == "Administrator") { ?>
 
                                 <button onclick="save_price(<?= $item['r_item_id'] ?>);">Save</button>
 
@@ -93,6 +93,19 @@ $fetch_request_item = $db->fetch_request_item($fetch_request_receipt['request_id
             <?php endif; ?>
         </tbody>
     </table>
+
+      <!-- Footer Signatures -->
+      <div class="mt-12 grid grid-cols-3 gap-4 text-center text-sm">
+        <div>
+            <p class="border-t border-gray-600 pt-2">Prepared by</p>
+        </div>
+        <div>
+            <p class="border-t border-gray-600 pt-2">Noted by</p>
+        </div>
+        <div>
+            <p class="border-t border-gray-600 pt-2">Approved by</p>
+        </div>
+    </div>
 </div>
 
 <!-- Print Button -->

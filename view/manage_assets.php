@@ -44,10 +44,10 @@
         &nbsp; &nbsp; &nbsp;
         <form id="category-form" method="POST">
             <div class="flex flex-wrap gap-2 mb-4">
-                <button type="submit" name="category_id" value="0"
+                <!-- <button type="submit" name="category_id" value="0"
                     class="category-tab px-4 py-2 border border-gray-300 rounded-md hover:bg-blue-100 active:bg-blue-200">
                     All
-                </button>
+                </button> -->
 
                 <button type="submit" name="category_id" value="10"
                     class="category-tab px-4 py-2 border border-gray-300 rounded-md hover:bg-blue-100 active:bg-blue-200">
@@ -93,7 +93,7 @@
                     <th class="p-3">Condition</th>
                     <th class="p-3">Office</th>
                     <th class="p-3">Purchase Date</th>
-                    <th class="p-3">Price</th>
+                    <!-- <th class="p-3">Price</th> -->
                     <th class="p-3">Status</th>
 
 
@@ -112,7 +112,31 @@
 
 
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const assetCodeInput = document.getElementById('add_assets_code');
+        const assetTypeSelect = document.getElementById('add_assets_description');
 
+        // Generate a random number once
+        const randomNumber = Math.floor(Math.random() * 999) + 1;
+        const paddedNumber = String(randomNumber).padStart(5, '0');
+
+        function updateAssetCode() {
+            const selectedType = assetTypeSelect.value;
+            let prefix = '';
+
+            if (selectedType === 'Assets') {
+                prefix = 'AST';
+            } else if (selectedType === 'Office Supplies') {
+                prefix = 'OFF';
+            }
+
+            assetCodeInput.value = prefix ? prefix + paddedNumber : '';
+        }
+
+        assetTypeSelect.addEventListener('change', updateAssetCode);
+    });
+</script>
 
 <!-- Modal for Adding Promo -->
 <div id="addAssetsModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center" style="display:none;">
@@ -134,10 +158,15 @@
                 <input type="file" id="add_assets_img" name="assets_img" class="w-full p-2 border rounded-md">
             </div>
 
+            <?php
+            $randomNumber = rand(1, 999);
+            // $assetId = 'AST' . str_pad($randomNumber, 5, '0', STR_PAD_LEFT);
+            ?>
             <div class="mb-4">
                 <label for="add_assets_code" class="block text-sm font-medium text-gray-700">Asset ID</label>
-                <input type="text" id="add_assets_code" name="assets_code" class="w-full p-2 border rounded-md" required>
+                <input type="text" id="add_assets_code" name="assets_code" value="" class="w-full p-2 border rounded-md bg-gray-100" readonly required>
             </div>
+
 
             <div class="mb-4">
                 <label for="add_assets_name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -145,15 +174,30 @@
             </div>
 
 
+            <!-- <div class="mb-4">
+                <label for="add_assets_description" class="block text-sm font-medium text-gray-700">Type</label>
+                <select class="w-full p-2 border rounded-md" id="add_assets_description" name="assets_description" required>
+                    <option value="">Select Type</option>
+                    <option value="Assets">Assets</option>
+                    <option value="Office Supplies">Office Supplies</option>
+                </select>
+
+<textarea id="add_assets_description" name="assets_description" class="w-full p-2 border rounded-md" rows="2"></textarea> 
+            </div> -->
             <div class="mb-4">
-                <label for="add_assets_description" class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea id="add_assets_description" name="assets_description" class="w-full p-2 border rounded-md" rows="2"></textarea>
+                <label for="add_assets_description" class="block text-sm font-medium text-gray-700">Type</label>
+                <select class="w-full p-2 border rounded-md" id="add_assets_description" name="assets_description" required>
+                    <option value="">Select Type</option>
+                    <option value="Assets">Assets</option>
+                    <option value="Office Supplies">Office Supplies</option>
+                </select>
             </div>
 
 
-            <div class="mb-4">
+
+            <div hidden class="mb-4">
                 <label for="add_assets_price" class="block text-sm font-medium text-gray-700">Price</label>
-                <input type="text" id="add_assets_price" name="assets_price" class="w-full p-2 border rounded-md" required>
+                <input type="text" id="add_assets_price" name="assets_price" class="w-full p-2 border rounded-md">
             </div>
 
 
@@ -350,15 +394,15 @@
 
 
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="assets_variety_name" class="block text-sm font-medium text-gray-700">Variety Name</label>
-                <input type="text" id="assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md" required>
+                <input type="text" id="assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md">
             </div>
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="assets_variety_value" class="block text-sm font-medium text-gray-700">Variety Value</label>
                 <div id="variety-values-container">
-                    <input type="text" name="assets_variety_value[]" class="w-full p-2 mb-2 border rounded-md" required>
+                    <input type="text" name="assets_variety_value[]" class="w-full p-2 mb-2 border rounded-md">
                 </div>
                 <button type="button" class="add-variety-value mt-2 text-blue-500">Add Another Variety Value</button>
             </div>
@@ -417,9 +461,9 @@
             </div>
 
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="update_assets_price" class="block text-sm font-medium text-gray-700">Price</label>
-                <input type="text" id="update_assets_price" name="assets_price" class="w-full p-2 border rounded-md" required>
+                <input type="text" id="update_assets_price" name="assets_price" class="w-full p-2 border rounded-md">
             </div>
 
 
@@ -597,12 +641,12 @@
 
 
             <!-- Variety Section in the Form -->
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="update_assets_variety_name" class="block text-sm font-medium text-gray-700">Variety Name</label>
-                <input type="text" id="update_assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md" readonly>
+                <input type="text" id="update_assets_variety_name" name="assets_variety_name" class="w-full p-2 border rounded-md">
             </div>
 
-            <div class="mb-4">
+            <div hidden class="mb-4">
                 <label for="update_assets_variety_values" class="block text-sm font-medium text-gray-700">Variety Values</label>
                 <div id="update_assets_variety_values" class="update_assets_variety_values">
                     <!-- Existing variety values will be appended here -->

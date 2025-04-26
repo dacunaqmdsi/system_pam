@@ -111,7 +111,7 @@ function isNavClosed($conn, $navId, $userType)
             </div>
 
 
-            <nav class="space-y-4 text-left lg:text-left sticky-top">
+            <nav class="space-y-4 text-left lg:text-left">
 
                 <?php if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads") { ?>
 

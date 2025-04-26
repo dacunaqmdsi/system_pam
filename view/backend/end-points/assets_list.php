@@ -17,17 +17,19 @@ if ($fetch_all_user->num_rows > 0):
         <tr>
             <td class="p-2"><?php echo $count++ ?></td>
             <td class="p-2">
-                <div id="qrcode-<?php echo $user['id']; ?>"
-                    class="qr-container relative group cursor-pointer"
-                    data-asset-details="<?php echo htmlspecialchars($user['asset_code']) . ' | ' . htmlspecialchars($user['name']) . ' | ' . htmlspecialchars($user['description']); ?>">
-                    <!-- Hover effect to scale QR Code -->
-                    <div class="absolute inset-0 flex items-center justify-center bg-gray-500 opacity-0 group-hover:opacity-50 transition-opacity">
-                        <span class="text-white">Click to View Larger QR</span>
+                <?php if ($id == 10): ?>
+                    <div id="qrcode-<?php echo $user['id']; ?>"
+                        class="qr-container relative group cursor-pointer"
+                        data-asset-details="<?php echo htmlspecialchars($user['asset_code']) . ' | ' . htmlspecialchars($user['name']) . ' | ' . htmlspecialchars($user['description']); ?>">
+                        <!-- Hover effect to scale QR Code -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-gray-500 opacity-0 group-hover:opacity-50 transition-opacity">
+                            <span class="text-white">Click to View Larger QR</span>
+                        </div>
                     </div>
-                </div>
+                <?php endif; ?>
             </td>
-            <td class="p-2">
 
+            <td class="p-2">
                 <div class="flex items-center justify-center w-12 h-12">
                     <?php if (!empty($user['image'])): ?>
                         <img src="../uploads/images/<?php echo htmlspecialchars($user['image']); ?>"
@@ -45,10 +47,24 @@ if ($fetch_all_user->num_rows > 0):
             <td class="p-2"><?php echo htmlspecialchars($user['description']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['category_name']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['subcategory_name']); ?></td>
-            <td class="p-2"><?php echo htmlspecialchars($user['condition_status']); ?></td>
+
+            <?php
+            if ($user['condition_status'] == 'New') {
+                echo ' <td class="p-2" style="color:blue;">' . htmlspecialchars($user['condition_status']) . '</td>';
+            } else if ($user['condition_status'] == 'Good') {
+                echo ' <td class="p-2" style="color:green;">' . htmlspecialchars($user['condition_status']) . '</td>';
+            } else if ($user['condition_status'] == 'Needs Repair') {
+                echo ' <td class="p-2" style="color:orange;">' . htmlspecialchars($user['condition_status']) . '</td>';
+            } else {
+                echo ' <td class="p-2" style="color:red;">' . htmlspecialchars($user['condition_status']) . '</td>';
+            }
+            ?>
+
+
+
             <td class="p-2"><?php echo htmlspecialchars($user['office_name']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['purchase_date']); ?></td>
-            <td class="p-2">₱<?php echo htmlspecialchars(number_format($user['price'], 2)); ?></td>
+            <!-- <td class="p-2">₱<?php echo htmlspecialchars(number_format($user['price'], 2)); ?></td> -->
             <td class="p-2"><?php echo htmlspecialchars($user['status']); ?></td>
 
             <?php if (isset($On_Session[0]['role']) && $On_Session[0]['role'] == "Administrator") { ?>
@@ -103,7 +119,7 @@ if ($fetch_all_user->num_rows > 0):
     $(document).ready(function() {
         // Generate QR Codes for assets
         <?php
-        $fetch_all_user = $db->fetch_all_assets();
+        $fetch_all_user = $db->fetch_all_assets_2($id);
         while ($user = $fetch_all_user->fetch_assoc()):
         ?>
             var assetDetails = "<?php echo htmlspecialchars($user['asset_code']); ?> | <?php echo htmlspecialchars($user['name']); ?> | <?php echo htmlspecialchars($user['description']); ?>";

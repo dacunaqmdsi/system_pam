@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(0);
 include "components/header.php";
 
 $department = $_GET['department'];
@@ -34,7 +34,7 @@ $fetch_request_receipt = $db->fetch_all_request_for_admin_sort($department);
     }
 </script>
 <style>
-    
+
 </style>
 <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg" id="printedArea">
     <!-- Header -->
@@ -56,7 +56,8 @@ $fetch_request_receipt = $db->fetch_all_request_for_admin_sort($department);
         <tbody>
             <?php if ($fetch_request_receipt && $fetch_request_receipt->num_rows > 0):
                 while ($item = $fetch_request_receipt->fetch_assoc()):
-                    $total_price = $item['r_item_price'] * $item['r_item_qty'];
+                    $total_price = $item['r_finance_price'] * $item['r_item_qty'];
+                    $get_t += $total_price;
             ?>
                     <tr class="border">
                         <td class="border p-2 text-center"><?= htmlspecialchars($item['asset_name']) ?></td>
@@ -71,6 +72,13 @@ $fetch_request_receipt = $db->fetch_all_request_for_admin_sort($department);
                         </td>
                     </tr>
                 <?php endwhile; ?>
+                <tr>
+                    <td class="border p-2 text-center"></td>
+                    <td class="border p-2 text-center"></td>
+                    <td class="border p-2 text-center"></td>
+                    <td class="border p-2 text-center">Total: <b><?php echo number_format($get_t, 2); ?></b></td>
+
+                </tr>
             <?php else: ?>
                 <tr>
                     <td colspan="4" class="p-4 text-center text-gray-500">No records found.</td>
@@ -78,6 +86,20 @@ $fetch_request_receipt = $db->fetch_all_request_for_admin_sort($department);
             <?php endif; ?>
         </tbody>
     </table>
+
+
+    <!-- Footer Signatures -->
+    <div class="mt-12 grid grid-cols-3 gap-4 text-center text-sm">
+        <div>
+            <p class="border-t border-gray-600 pt-2">Prepared by</p>
+        </div>
+        <div>
+            <p class="border-t border-gray-600 pt-2">Noted by</p>
+        </div>
+        <div>
+            <p class="border-t border-gray-600 pt-2">Approved by</p>
+        </div>
+    </div>
 </div>
 
 <!-- Print Button -->

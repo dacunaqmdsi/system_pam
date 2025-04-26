@@ -1,7 +1,11 @@
 <?php
+session_start();
 include('backend/class.php');
 $db = new global_class();
 $maintenance = $db->fetch_maintenance();
+if (isset($_SESSION['id'])) {
+  header("location: view/users");
+}
 ?>
 
 <!DOCTYPE html>
@@ -48,11 +52,22 @@ $maintenance = $db->fetch_maintenance();
           <label for="email" class="block text-sm font-semibold text-gray-700">Username</label>
           <input type="text" id="email" name="email" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
-
-        <div>
+        <div class="mb-4">
           <label for="password" class="block text-sm font-semibold text-gray-700">Password</label>
-          <input type="password" id="password" name="password" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <div class="relative">
+            <input type="password" id="password" name="password" class="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10">
+            <button type="button" onclick="toggleIndexPassword()" class="absolute right-3 top-3 text-sm text-gray-600">
+              👁️
+            </button>
+          </div>
         </div>
+        <script>
+function toggleIndexPassword() {
+  const input = document.getElementById('password');
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+</script>
+
 
         <div>
           <button type="submit" id="btnLogin" class="w-full py-3 px-4 rounded-lg shadow-md text-sm font-semibold text-white bg-red-800 hover:bg-red-900 transition duration-200">
