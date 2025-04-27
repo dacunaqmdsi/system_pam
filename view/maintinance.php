@@ -1,7 +1,7 @@
 <?php include "components/header.php"; ?>
 <?php
 // Database connection
-$conn = mysqli_connect("localhost", "root", "", "pam");
+$db_connection = mysqli_connect("localhost", "u680385054_procurement", "@Mk5^vnVJ", "u680385054_pro");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
@@ -192,7 +192,7 @@ $result = mysqli_query($conn, $query);
 
 
     <?
-    $conn = mysqli_connect("localhost", "root", "", "pam");
+   $db_connection = mysqli_connect("localhost", "u680385054_procurement", "@Mk5^vnVJ", "u680385054_pro");
     if (!$conn) {
         die("Connection failed: " . mysqli_connect_error());
     }

@@ -1,5 +1,5 @@
 <?php
-$db_connection = mysqli_connect("localhost", "root", "", "pam");
+$db_connection = mysqli_connect("localhost", "u680385054_procurement", "@Mk5^vnVJ", "u680385054_pro");
 if (!$db_connection) {
     die("Connection failed: " . mysqli_connect_error());
 }
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         mysqli_stmt_close($stmt);
 
         // Use https for the reset link (important for security)
-        $reset_link = "http://localhost/system_pam/forgot/forgot.php?email=$email&token=$token";
+        $reset_link = "https://procurementassets.org/forgot/forgot.php?email=$email&token=$token";
 
         $message = "Follow this link to reset your password. This link will expire in 2 minutes: <a href='$reset_link'>$reset_link</a>";
 

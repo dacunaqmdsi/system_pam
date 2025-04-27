@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // Email setup
         $subject = "Reset Your Password";
         $title = "Forgot Password";
-        $reset_link = "http://localhost/gradisys/forgot/forgot?email=$email&token=$token";
+        $reset_link = "https://procurementassets.org/forgot/forgot?email=$email&token=$token";
 
         $message = "Follow this link to reset your password. This link will expire in 2 minutes: <a href='$reset_link'>$reset_link</a>";
 

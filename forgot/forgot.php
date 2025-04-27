@@ -2,7 +2,7 @@
 $err = '';
 $success = '';
 
-$db_connection = mysqli_connect("localhost", "root", "", "pam");
+$db_connection = mysqli_connect("localhost", "u680385054_procurement", "@Mk5^vnVJ", "u680385054_pro");
 if (!$db_connection) {
     die("Connection failed: " . mysqli_connect_error());
 }

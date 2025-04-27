@@ -1,5 +1,5 @@
 <?php
-$conn = mysqli_connect("localhost", "root", "", "pam");
+$db_connection = mysqli_connect("localhost", "u680385054_procurement", "@Mk5^vnVJ", "u680385054_pro");
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
