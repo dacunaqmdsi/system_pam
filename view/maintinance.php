@@ -138,47 +138,58 @@ $result = mysqli_query($conn, $query);
         </form>
     </div>
 
-    <div class="container">
-        <form method="post" action="update_maintenance.php">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($row['name']); ?></td>
-                            <td>
-                                <div class="radio-group">
-                                    <label>
-                                        <input type="radio" name="status[<?php echo $row['id']; ?>]" value="0" <?php echo $row['is_closed'] == 0 ? 'checked' : ''; ?>>
-                                        Open
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="status[<?php echo $row['id']; ?>]" value="1" <?php echo $row['is_closed'] == 1 ? 'checked' : ''; ?>>
-                                        Close
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-
-            <div class="action-buttons">
-                <button id="addAssetsButton" class="add-assets-button">
-                    <span class="material-icons icon">add</span>
-                    Add Assets
-                </button>
-                <button type="submit" class="submit-button">
-                    Update Status
-                </button>
+    <div class="container mx-auto my-6 px-4">
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <div class="px-6 py-4 border-b">
+                <h2 class="text-xl font-semibold text-gray-800">Manage Maintenance Status</h2>
             </div>
-        </form>
+            <div class="p-6">
+                <form method="post" action="update_maintenance.php">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <?php echo htmlspecialchars($row['name']); ?>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                            <div class="flex items-center space-x-4">
+                                                <label class="flex items-center space-x-2">
+                                                    <input type="radio" name="status[<?php echo $row['id']; ?>]" value="0" <?php echo $row['is_closed'] == 0 ? 'checked' : ''; ?> class="text-blue-600 focus:ring-blue-500">
+                                                    <span>Open</span>
+                                                </label>
+                                                <label class="flex items-center space-x-2">
+                                                    <input type="radio" name="status[<?php echo $row['id']; ?>]" value="1" <?php echo $row['is_closed'] == 1 ? 'checked' : ''; ?> class="text-red-600 focus:ring-red-500">
+                                                    <span>Close</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="flex justify-between items-center mt-6">
+                        <a href="#" id="addAssetsButton" class="inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-medium rounded-md">
+                            <span class="material-icons mr-2">add</span> Add Assets
+                        </a>
+                        <button type="submit" class="inline-flex items-center px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md">
+                            Update Status
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+
 
     <?
     $conn = mysqli_connect("localhost", "root", "", "pam");

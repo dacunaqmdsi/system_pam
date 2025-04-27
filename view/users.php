@@ -39,7 +39,16 @@ if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Office Heads")
         <input type="text" id="searchInput" placeholder="Search users..."
             class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
     </div>
-
+    <script>
+        $(document).ready(function() {
+            $('#userTable').DataTable({
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: true
+            });
+        });
+    </script>
     <!-- User Table Card -->
     <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
         <button id="adduserButton" class="bg-red-500 text-white py-2 px-4 text-sm rounded-lg flex items-center hover:bg-red-600 transition duration-300 mb-4">

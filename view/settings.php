@@ -29,20 +29,21 @@
                 <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
             </div>
         </div>
+
         <!-- System Name -->
         <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700">Username</label>
-            <input type="text" id="text" name="email" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New User Name" />
+            <label for="email" class="block text-sm font-medium text-gray-700">Username</label>
+            <input type="text" id="email" name="email" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New User Name" />
         </div>
 
         <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700">Fullname</label>
-            <input type="text" id="text" name="fullname" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New Full Name" />
+            <label for="fullname" class="block text-sm font-medium text-gray-700">Fullname</label>
+            <input type="text" id="fullname" name="fullname" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New Full Name" />
         </div>
 
         <div class="mb-6">
-            <label for="password" class="block text-sm font-medium text-gray-700">Nickname</label>
-            <input type="text" id="text" name="nickname" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New Nickname" />
+            <label for="nickname" class="block text-sm font-medium text-gray-700">Nickname</label>
+            <input type="text" id="nickname" name="nickname" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter New Nickname" />
         </div>
 
         <div class="mb-6">
@@ -54,7 +55,13 @@
             <label for="cpassword" class="block text-sm font-medium text-gray-700">Confirm Password</label>
             <input type="password" id="cpassword" name="cpassword" value="" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="Enter Confirm Password" />
         </div>
-
+        <div class="mb-6">
+            <label for="add_user_image" class="block text-sm font-medium text-gray-700">Update Image</label>
+            <input type="file"
+                name="user_image"
+                accept=".jpg, .jpeg, .png"
+                class="w-full p-2 border rounded-md">
+        </div>
 
 
         <!-- Submit Button -->

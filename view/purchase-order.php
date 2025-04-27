@@ -55,7 +55,16 @@
 
 
 
-
+<script>
+    $(document).ready(function() {
+        $('#userTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true
+        });
+    });
+</script>
 
 
 <!-- User Table Card -->
@@ -74,7 +83,7 @@
                     <th class="p-3">Request By</th>
                     <!-- <th class="p-3">Supplier Name</th> -->
 
-                    <th class="p-3">Designation</th>
+                    <!-- <th class="p-3">Designation</th> -->
                     <th class="p-3">Request Date</th>
                     <th class="p-3">Status</th>
 

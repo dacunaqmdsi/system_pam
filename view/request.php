@@ -95,6 +95,18 @@
     <!-- Cart Section -->
 </div>
 
+<script>
+    $(document).ready(function() {
+        $('#userTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true
+        });
+    });
+</script>
+
+
 <!-- User Table Card -->
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
     <div class="overflow-x-auto">
@@ -104,7 +116,7 @@
                     <th class="p-3">#</th>
                     <th class="p-3">Invoice</th>
                     <th class="p-3">Request By</th>
-                    <th class="p-3">Designation</th>
+                    <!-- <th class="p-3">Designation</th> -->
                     <th class="p-3">Request Date</th>
                     <th class="p-3">Status</th>
                     <th class="p-3 text-center">Actions</th>

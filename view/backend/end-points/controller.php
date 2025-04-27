@@ -608,7 +608,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(["status" => 400, "message" => $result]);
         }
     } else if ($_POST['requestType'] == 'UpdatePassword') {
-
         session_start();
         $user_id = $_SESSION['id'];
         $password = $_POST['password'];
@@ -617,7 +616,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nickname = $_POST['nickname'];
 
 
-        $result = $db->UpdatePassword($user_id, $password, $email, $fullname, $nickname);
+        $uploadDir = "../../../uploads/images/";
+
+        function generateUniqueFilename($file, $prefix)
+        {
+            $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+            return $prefix . '_' . uniqid() . '.' . $ext;
+        }
+
+        function handleFileUpload($file, $uploadDir, $prefix)
+        {
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+            $maxFileSize = 10 * 1024 * 1024; // 10MB
+
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                return null;
+            }
+
+            // Ensure the temp file exists before checking MIME type
+            if (!file_exists($file['tmp_name'])) {
+                return null;
+            }
+
+            if (!in_array(mime_content_type($file['tmp_name']), $allowedTypes)) {
+                return null;
+            }
+
+            if ($file['size'] > $maxFileSize) {
+                return null;
+            }
+
+            $fileName = generateUniqueFilename($file, $prefix);
+            $destination = $uploadDir . $fileName;
+
+            if (move_uploaded_file($file['tmp_name'], $destination)) {
+                return $fileName;
+            }
+            return null;
+        }
+
+        $user_image = $_FILES['user_image'] ?? null;
+
+        // NEW FILE NAME with Prefix
+        $user_imageName = $user_image ? handleFileUpload($user_image, $uploadDir, "Profile") : null;
+
+
+        $result = $db->UpdatePassword($user_id, $password, $email, $fullname, $nickname, $user_imageName);
+
 
         if ($result == "success") {
             echo json_encode(["status" => 200, "message" => "Update Successfully"]);

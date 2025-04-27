@@ -1,7 +1,4 @@
-
-
-
-<?php include "components/header.php";?>
+<?php include "components/header.php"; ?>
 
 <!-- Top bar with user profile -->
 <div class="flex justify-between items-center bg-white p-4 mb-6 rounded-md shadow-md">
@@ -30,10 +27,19 @@
     <span class="absolute inset-y-0 left-3 flex items-center text-gray-500">
         <i class="material-icons text-lg">search</i>
     </span>
-    <input type="text" id="searchInput" placeholder="Search users..." 
+    <input type="text" id="searchInput" placeholder="Search users..."
         class="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-400 focus:border-red-400 transition">
 </div>
-
+<script>
+    $(document).ready(function() {
+        $('#userTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true
+        });
+    });
+</script>
 <!-- User Table Card -->
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
 
@@ -43,23 +49,23 @@
         <table id="userTable" class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">
             <thead class="bg-gray-100 text-gray-700">
                 <tr>
-                   
+
                     <th class="p-3">Image</th>
                     <th class="p-3">Asset Code</th>
                     <th class="p-3">Name</th>
-                   
+
                     <th class="p-3">Category</th>
                     <th class="p-3">Office</th>
                     <th class="p-3">Purchase Date</th>
                     <th class="p-3">Price</th>
                     <th class="p-3">Status</th>
-                    
-                    
-                   
+
+
+
                 </tr>
             </thead>
             <tbody>
-            <?php include "backend/end-points/inventory_list.php"; ?>
+                <?php include "backend/end-points/inventory_list.php"; ?>
             </tbody>
         </table>
     </div>
@@ -75,4 +81,4 @@
 
 
 
-<?php include "components/footer.php";?>
+<?php include "components/footer.php"; ?>

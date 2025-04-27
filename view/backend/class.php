@@ -393,7 +393,7 @@ class global_class extends db_connect
         } else {
             // Item does not exist, insert a new row
             $insertQuery = $this->conn->prepare("INSERT INTO request_cart (cart_user_id, cart_asset_id, cart_qty, cart_variety, specification, specification_array) VALUES (?, ?, ?,?, ?, ?)");
-            $insertQuery->bind_param("iiisss", $add_id, $asset_id, $qty, $variety, $specification , $specification_array);
+            $insertQuery->bind_param("iiisss", $add_id, $asset_id, $qty, $variety, $specification, $specification_array);
             return $insertQuery->execute();
         }
     }
@@ -1075,19 +1075,21 @@ class global_class extends db_connect
     }
 
 
-    public function UpdatePassword($user_id, $password, $email, $fullname, $nickname)
+    public function UpdatePassword($user_id, $password, $email, $fullname, $nickname, $user_imageName)
     {
-        // Hash the password
+        // Properly hash the password
         $hashed_password = $password;
 
-        // Update password in the database
-        $sql = "UPDATE users SET password = ?, email = ?, fullname = ?, nickname = ? WHERE id = ?";
+        // Prepare SQL query
+        $sql = "UPDATE users SET password = ?, email = ?, fullname = ?, nickname = ?, profile_picture = ? WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
+
         if (!$stmt) {
             return 'Error in preparing statement: ' . $this->conn->error;
         }
 
-        $stmt->bind_param("sssss", $hashed_password, $email, $fullname, $nickname, $user_id);
+        // Bind parameters: 5 strings and 1 integer
+        $stmt->bind_param("sssssi", $hashed_password, $email, $fullname, $nickname, $user_imageName, $user_id);
 
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {
@@ -1095,11 +1097,13 @@ class global_class extends db_connect
                 return 'success';
             } else {
                 $stmt->close();
-                return 'No rows updated  user_id might not exist or password is the same.';
+                return 'No rows updated — user ID might not exist, or data is identical.';
             }
+        } else {
+            $stmt->close();
+            return 'Error executing statement: ' . $stmt->error;
         }
     }
-
 
 
 

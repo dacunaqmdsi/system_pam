@@ -34,7 +34,7 @@
 <!-- User Table Card -->
 <div class="max-w-7xl mx-auto grid grid-cols-12 gap-4">
 
-   
+
 </div>
 
 
@@ -43,7 +43,16 @@
 
 
 
-
+<script>
+    $(document).ready(function() {
+        $('#userTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true
+        });
+    });
+</script>
 <!-- User Table Card -->
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6 mt-6">
 
@@ -59,7 +68,7 @@
                     <th class="p-3">Request By</th>
                     <!-- <th class="p-3">Supplier Name</th> -->
 
-                    <th class="p-3">Designation</th>
+                    <!-- <th class="p-3">Designation</th> -->
                     <th class="p-3">Request Date</th>
                     <th class="p-3">Status</th>
 

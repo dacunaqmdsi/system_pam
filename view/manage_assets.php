@@ -76,7 +76,16 @@
 
 
     </div>
-
+    <script>
+    $(document).ready(function() {
+        $('#userTable').DataTable({
+            paging: true,
+            searching: true,
+            ordering: true,
+            info: true
+        });
+    });
+</script>
     <!-- Table Wrapper for Responsiveness -->
     <div class="overflow-x-auto">
         <table id="userTable" class="table-auto w-full text-sm text-left text-gray-500 dark:text-gray-400">

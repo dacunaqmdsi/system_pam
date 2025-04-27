@@ -56,8 +56,6 @@ $(document).on('change', '#repair_assets', function (e) {
 });
 
 
-
-
 $("#frmUpdatePassword").submit(function (e) {
     e.preventDefault();
     $('.spinner').show();
@@ -68,11 +66,21 @@ $("#frmUpdatePassword").submit(function (e) {
     let fullname = $("#fullname").val();
     let nickname = $("#nickname").val();
 
+    var fileInput = $("input[name='user_image']")[0];
 
+    // Check if file is selected
+    if (fileInput.files.length > 0) {
+        var userImage = fileInput.files[0]; // <-- this is the uploaded file
+
+        console.log("Filename:", userImage.name);
+        console.log("File type:", userImage.type);
+        console.log("File size (bytes):", userImage.size);
+    } else {
+        console.log("No file selected.");
+    }
     // Check for empty fields
     if (!password || !cpassword || !email || !fullname || !nickname) {
         alertify.error("Password fields cannot be empty!");
-
         $('.spinner').hide();
         return;
     }
@@ -80,15 +88,13 @@ $("#frmUpdatePassword").submit(function (e) {
     // Check if passwords match
     if (password !== cpassword) {
         alertify.error("Passwords do not match!");
-
         $('.spinner').hide();
         return;
     }
 
-
-
     var formData = new FormData(this);
     formData.append('requestType', 'UpdatePassword');
+
     $.ajax({
         type: "POST",
         url: "backend/end-points/controller.php",
@@ -111,7 +117,7 @@ $("#frmUpdatePassword").submit(function (e) {
             }
         },
         complete: function () {
-            $("#submitBtn").prop("disabled", false).text("Submit");
+            $("#submitBtn").prop("disabled", false).text("Save Changes");
         }
     });
 });

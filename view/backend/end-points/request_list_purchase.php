@@ -25,7 +25,7 @@ if ($fetch_all_user->num_rows > 0):
             <td class="p-2"><?php echo htmlspecialchars($user['role']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['user_fullname'])); ?></td>
             <!-- <td class="p-2"><?php echo htmlspecialchars(ucfirst($user['request_supplier_name'])); ?></td> -->
-            <td class="p-2"><?php echo htmlspecialchars($user['request_designation']); ?></td>
+            <!-- <td class="p-2"><?php echo htmlspecialchars($user['request_designation']); ?></td> -->
             <td class="p-2"><?php echo htmlspecialchars($user['request_date']); ?></td>
             <td class="p-2"><?php echo htmlspecialchars($user['request_status']); ?></td>
 
